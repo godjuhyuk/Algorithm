@@ -5,4 +5,9 @@
 
 backup
 
+<<<<<<< HEAD
 backup2 >>
+=======
+backup2 
+pejqwpoejqwpoejqowep
+>>>>>>> 88bf4d1b7bb0a33f51da0abe06fd13599b46341f
