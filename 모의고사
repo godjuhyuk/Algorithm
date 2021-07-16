@@ -1,0 +1,22 @@
+def solution(answers):
+    a=[1,2,3,4,5]; b=[2,1,2,3,2,4,2,5];c=[3,3,1,1,2,2,4,4,5,5]
+    while len(a)<len(answers):
+        a+=a
+    while len(b)<len(answers):
+        b+=b
+    while len(c)<len(answers):
+        c+=c   
+    acnt=0;bcnt=0;ccnt=0;
+    for i in range(len(answers)):
+        if a[i]==answers[i]:
+            acnt+=1;
+        if b[i]==answers[i]:
+            bcnt+=1;
+        if c[i]==answers[i]:
+            ccnt+=1;
+    ans =[acnt,bcnt,ccnt];
+    answer=[];
+    for i in range(len(ans)):
+        if ans[i]==max(ans):
+            answer.append(i+1);
+    return answer
