@@ -1,0 +1,13 @@
+def solution(arr):
+    answer=[];
+    if len(arr)==1:
+        return arr
+    
+    else:
+        for i in range(len(arr)):
+            arr.append(-1)
+            if arr[i]!=arr[i+1]:
+                answer.append(arr[i])
+                
+    
+    return answer
