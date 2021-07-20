@@ -1,0 +1,4 @@
+def lenofn(n):
+    return len(list(filter(lambda x : n%x==0, range(1,n+1))))
+def solution(left, right):
+    return sum(list(map(lambda x : x if lenofn(x)%2==0 else -x, range(left,right+1) )))
