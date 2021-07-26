@@ -1,0 +1,19 @@
+name = input("Enter file:")
+if len(name) < 1:
+    name = "mbox-short.txt"
+handle = open(name)
+answer=[]
+hd=handle.read().split()
+for i in range(len(hd)):
+    if hd[i]=='From':
+        answer.append( hd[i+1])
+counts=dict()
+
+for name in answer:
+    counts[name]=counts.get(name,0)+1
+
+for key in counts:
+    if counts[key]==sorted(counts.values())[len(counts)-1]:
+		biggestidx = key
+        
+print(biggestidx,counts[biggestidx])
