@@ -1,0 +1,12 @@
+def solution(N, stages):
+    user_phase={}
+    count=[]
+    num_of_users=len(stages)
+    for i in range(1,N+1):
+        if num_of_users ==0 :
+            user_phase[i] =0
+            continue
+        count=stages.count(i)
+        user_phase[i]=count/num_of_users
+        num_of_users-=count
+    return (sorted(user_phase,key=lambda x : user_phase[x],reverse=True))
