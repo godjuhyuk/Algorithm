@@ -1,0 +1,15 @@
+def solution(s):
+    p_count=0
+    y_count=0
+    for letter in s:
+        if letter == 'p' or letter== 'P':
+            p_count+=1
+        elif letter == 'y' or letter =='Y':
+            y_count+=1
+        
+    return True if p_count==y_count else False
+    ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    한줄로도 할 수 있다 
+    return s.lower().count('y')==s.lower().count('p')
+    
+  
