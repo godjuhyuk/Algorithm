@@ -1,0 +1,11 @@
+def solution(n):
+    answer=[]
+    
+    for word in str(n):
+        answer.append(int(word))
+    answer.sort(reverse=True)
+    leng= len(answer)-1; sum=0
+    for i in answer:
+        sum+=i* 10**leng
+        leng-=1
+    return sum
