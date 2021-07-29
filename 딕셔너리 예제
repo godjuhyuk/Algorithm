@@ -1,0 +1,11 @@
+handle = open('mbox-short.txt')
+lst=list()
+for line in handle:
+    if not line.startswith('From '): continue
+    lst.append(line.split())
+count = dict()
+for hour in lst:
+    count[(hour[5][0:2])]=count.get((hour[5][0:2]),0)+1
+ans = (dict(sorted(count.items(),key = lambda x : x[0])))
+for key in ans:
+    print('%s %s'%(key,ans[key]))
