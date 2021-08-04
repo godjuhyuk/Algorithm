@@ -1,0 +1,20 @@
+import numpy as np
+import pandas as pd
+tips = pd.read_csv('tips.csv')
+Count=0;
+for i in tips['time'].index:
+    if (tips['time'][i] == 'Dinner') & (tips['day'][i] =='Sun'):
+        Count+=1;
+print(Count)
+
+# Problem 3
+tips.duplicated().unique()
+# True가 존재 
+tips[tips.duplicated()]
+tips[(tips['total_bill']==13.0)&(tips['tip']==2.0)&(tips['smoker']=='Yes') & (tips['day']=='Thur') &(tips['time']=='Lunch')]
+# Problem 4
+real_tip = tips.drop_duplicates()
+real_tip['tips_rate'] = real_tip['tip']/real_tip['total_bill']
+real_tip['tips_rate'].rank(ascending = False)[100] # 결과값이 22이므로 User100의 내림차순 순위는 22위이다. 
+real_tip['tips_rate'].rank(ascending=False)
+real_tip = tips.drop_duplicates()
