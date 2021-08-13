@@ -1,0 +1,23 @@
+def solution(scores):
+    answer=[]
+    real_answer=''
+    for i in range(len(scores)):
+        king = scores[i][i]
+        MMU=[]
+        for j in range(len(scores)):
+            MMU.append(scores[j][i])
+        if (king==max(MMU) or king==min(MMU)) and MMU.count(king)==1:
+            MMU.remove(king)
+        answer.append(sum(MMU)/len(MMU))
+        
+    for i in range(len(answer)):
+        if answer[i]>=90:
+            real_answer+='A'
+        elif answer[i]>=80:
+            real_answer+='B'
+        elif answer[i]>=70:
+            real_answer+='C'
+        elif answer[i]>=50:
+            real_answer+='D'
+        else: real_answer+='F'
+    return real_answer
