@@ -1,45 +1,39 @@
-/* package whatever; // don't place package name! */
-
 import java.util.*;
 import java.io.*;
-
-/* Name of the class has to be "Main" only if the class is public. */
-public class Main
-{
-	public static void main (String[] args) throws IOException
-	{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		int M = Integer.parseInt(br.readLine());
-		boolean[] visited = new boolean[N+1];
-		boolean[][] pointArr = new boolean[N+1][N+1];
-		
-		for(int i=0; i<M;i++){
-			String[] input = br.readLine().split(" ");
-			int A = Integer.parseInt(input[0]);
-			int B = Integer.parseInt(input[1]);
-			pointArr[A][B] = true;
-			pointArr[B][A] = true;
-		}
-		Stack<Integer> stack = new Stack<>();
-		for(int i=1; i<N+1; i++){
-			if(pointArr[i][1]){
-				stack.push(i);
-			}
-		}
-		int loca;
-		int cnt = 0;
-		visited[1] = true;
-		while(!stack.isEmpty()){
-			loca = stack.pop();
-			if(!visited[loca]) cnt++;
-			visited[loca] = true;
-			for(int i=1; i<N+1; i++){
-				if(!visited[i] && pointArr[loca][i]){
-					stack.push(i);
+public class Main {
+	static int n, m, cnt;
+	static boolean[] visited;
+	static boolean[][] pointArr;
+	static Queue<Integer> bfsQueue;
+	public static void bfs() {
+			bfsQueue = new LinkedList();
+			bfsQueue.offer(1);
+			cnt = 0;
+			while(!bfsQueue.isEmpty()) {
+				int now = bfsQueue.poll();
+				for(int i=2; i<=n; i++) {
+					if(pointArr[i][now] && !visited[i]) {
+						bfsQueue.add(i);
+						visited[i] = true;
+						cnt++;
+					}
 				}
 			}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		m = Integer.parseInt(br.readLine());
+		visited = new boolean[n+1];
+		pointArr = new boolean[n+1][n+1];
+		for(int i=0; i<m; i++) {
+			String[] input = br.readLine().split(" ");
+			int a = Integer.parseInt(input[0]);
+			int b = Integer.parseInt(input[1]);
+			pointArr[a][b] = true;
+			pointArr[b][a] = true;
 		}
+		bfs();
 		System.out.println(cnt);
 	}
 }
