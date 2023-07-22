@@ -1,75 +1,54 @@
 import java.io.*;
 import java.util.*;
+
 public class Main {
 	static int n, m, ansCnt;
-	static boolean isItConstant;
-	static int[][] delta = {{1, 0},{-1, 0},{0, 1},{0, -1},{1, 1},{1, -1},{-1, 1},{-1, -1}};
-	static boolean[][] visited;
-	static int[][] map;
+	static int[][] delta = {{1, 0}, {0, 1}, {1, 1}, {-1, 0}, {0, -1}, {1, -1}, {-1, 1}, {-1, -1}};
+	static boolean[][] map;
 	
-
-	public static boolean isInRange(int r, int c) {
-		return r >= 0 && r < n && c >= 0 && c < m;
-	}
-	public static void dfs(Stack<int[]> stack) {
-		ansCnt = 0;
-		while(!stack.isEmpty()) {
-			Stack<int[]> tempStack = new Stack<>();
-			int[] checkList = stack.pop();
-			if(visited[checkList[0]][checkList[1]]) {
-				continue;
+	public static void dfs(int r, int c) {
+		for(int[] vector: delta) {
+			int nr = r + vector[0];
+			int nc = c + vector[1];
+			
+			if(map[nr][nc]) {
+				map[nr][nc] = false;
+				dfs(nr, nc);
 			}
-			tempStack.add(checkList);
-			ansCnt++;
-			while(!tempStack.isEmpty()) {
-				int[] temp = tempStack.pop();
-				int r = temp[0];
-				int c = temp[1];
-				for(int d=0; d<delta.length; d++) {
-					int nr = r + delta[d][0];
-					int nc = c + delta[d][1];
-					if(isInRange(nr, nc) && !visited[nr][nc] && map[nr][nc] == 1) {
-						visited[nr][nc] = true;
-						tempStack.add(new int[] {nr, nc});
-					}
-				}
-			}
+			
 		}
-		System.out.println(ansCnt);
 
 	}
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] input = br.readLine().split(" ");
-		while(! ( input[0].equals("0") && input[1].equals("0") ) ) {
-			if(input[0].equals("1") && input[1].equals("1")) {
-				String temp = br.readLine();
-				if(temp.equals("0")) {
-					System.out.println(0);
-				} else {
-					System.out.println(1);
-				}
-				input = br.readLine().split(" ");
-				continue;
-			}
+		while(true) {
+			String[] input = br.readLine().split(" ");
 			m = Integer.parseInt(input[0]);
 			n = Integer.parseInt(input[1]);
-			Stack<int[]> dfsStack = new Stack<>();
-			map = new int[n][m];
-			visited = new boolean[n][m];
-			for(int i=0; i<n; i++) {
-				input = br.readLine().split(" ");
-				for(int j=0; j<m; j++) {
-					map[i][j] = Integer.parseInt(input[j]);
-					if(map[i][j] == 1) {
-						dfsStack.add(new int[] {i, j});
-					}
+			if(n==0 && m==0) {
+				return;
+			}
+			map = new boolean[n+2][m+2];
+			for(int i=1; i<=n; i++) {
+				String island = br.readLine();
+				for(int j=1; j<=m; j++) {
+					map[i][j] = island.charAt((j-1) * 2) > '0';
 				}
 			}
-			dfs(dfsStack);
-			input = br.readLine().split(" ");
+			
+			for(int i=1; i<=n; i++) {
+				for(int j=1; j<=m; j++) {
+					if(map[i][j]) {
+						ansCnt++;
+						map[i][j] = false;
+						dfs(i, j);
+						}
+					}
+			}
+			System.out.println(ansCnt);
+			ansCnt=0;
 		}
+		
 	}
 }
-
