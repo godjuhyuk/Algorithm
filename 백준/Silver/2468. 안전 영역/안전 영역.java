@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 public class Main {
-	static int n, cnt, maxCnt, maxHeight;
+	static int n;
 	static int[][] delta = {{1,0}, {0, 1}, {-1, 0}, {0, -1}};
 	static int[][] island;
 	static boolean[][] landAfterRain;
@@ -35,8 +35,8 @@ public class Main {
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
-		island = new int[n+2][n+2];
-		
+        island = new int[n+2][n+2];
+		int maxHeight = 0;
 		for(int i=1; i<n+1; i++) {
 			String[] input = br.readLine().split(" ");
 			for(int j=1; j<n+1; j++) {
@@ -49,9 +49,10 @@ public class Main {
 			System.out.println(1);
 			return;
 		}
-		
+		int maxCnt = 0;
 		for(int i=1; i<=maxHeight; i++) {
 			landAfterRain = raining(i);
+            int cnt = 0;
 			for(int j=1; j<n+1; j++) {
 				for(int k=1; k<n+1; k++) {
 					if(landAfterRain[j][k]) {
@@ -61,7 +62,6 @@ public class Main {
 				}
 			}
 			maxCnt = Math.max(maxCnt, cnt);
-			cnt = 0;
 		}
 		System.out.println(maxCnt);
 	}
