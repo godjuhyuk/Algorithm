@@ -4,6 +4,7 @@ public class Main {
 	static int[][] apartment;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		int n = Integer.parseInt(br.readLine());
 		apartment = new int[15][15];
 		for(int j=1; j<15; j++) {
@@ -21,10 +22,10 @@ public class Main {
 		for(int i=0; i<n; i++) {
 			int a = Integer.parseInt(br.readLine());
 			int b = Integer.parseInt(br.readLine());
-			
-			System.out.println(apartment[a][b]);
-			
+			sb.append(apartment[a][b]).append("\n");
 		}
+		
+		System.out.println(sb.toString());
 		
 	}
 }
