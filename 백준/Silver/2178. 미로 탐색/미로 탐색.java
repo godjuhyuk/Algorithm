@@ -3,12 +3,24 @@ import java.util.*;
 public class Main {
     static int n, m, cnt;
     static char[][] map;
-    static int[][] delta = {{1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+    static int[][] delta = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     static boolean[][] visited;
     
     public static boolean isOutOfRange( int r, int c) {
         return r<0 || r>=n || c<0 || c>=m;
     }
+    public static void addQueue(int r, int c, Queue<int[]> bfsQueue) {
+    	for(int d=0; d<delta.length; d++) {
+			int nr = r + delta[d][0];
+			int nc = c + delta[d][1];
+			if(isOutOfRange(nr, nc) || visited[nr][nc] || map[nr][nc] == '0') {
+				continue;
+			}
+			visited[nr][nc] = true;
+			bfsQueue.add(new int[]{nr, nc});
+		}
+	}
+    
     public static void bfs(int a, int b) {
     	Queue<int[]> bfsQueue = new LinkedList();
     	bfsQueue.add(new int[] {a, b});
@@ -25,15 +37,7 @@ public class Main {
         			System.out.println(cnt);
         			return;
         		}
-        		for(int d=0; d<delta.length; d++) {
-        			int nr = r + delta[d][0];
-        			int nc = c + delta[d][1];
-        			if(isOutOfRange(nr, nc) || visited[nr][nc] || map[nr][nc] == '0') {
-        				continue;
-        			}
-        			visited[nr][nc] = true;
-        			bfsQueue.add(new int[]{nr, nc});
-        		}
+        		addQueue(r, c, bfsQueue);
     		}
     		cnt++;
     	}
