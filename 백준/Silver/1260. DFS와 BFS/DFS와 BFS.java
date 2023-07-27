@@ -1,74 +1,81 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
-/* Name of the class has to be "Main" only if the class is public. */
-import java.io.*;
 public class Main {
+	static int n, m, s;
+	static boolean[] visitedDfs;
+	static boolean[][] pointArr;
+	static StringBuilder sb;
+	
+	public static void dfs(int s) {
+		for(int i=1; i<n+1; i++) {
+			if(pointArr[s][i] && !visitedDfs[i]) {
+				visitedDfs[i] = true;
+				sb.append(i).append(" ");
+				dfs(i);
+			}
+		}
+	}
+	
+	
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] input = br.readLine().split(" ");
-        int N = Integer.parseInt(input[0]);
-        int M = Integer.parseInt(input[1]);
-        int S = Integer.parseInt(input[2]);
+        n = Integer.parseInt(input[0]);
+        m = Integer.parseInt(input[1]);
+        s = Integer.parseInt(input[2]);
 
-        boolean[][] pointArr = new boolean[N+1][N+1];
-        for(int i = 0; i< M; i++){
+        pointArr = new boolean[n+1][n+1];
+        for(int i = 0; i< m; i++){
             input = br.readLine().split(" ");
             int A = Integer.parseInt(input[0]);
             int B = Integer.parseInt(input[1]);
             pointArr[A][B] = true;
             pointArr[B][A] = true;
         }
-
-        StringBuilder dfs = new StringBuilder();
-        StringBuilder bfs = new StringBuilder();
-        boolean[] visitedDfs = new boolean[N+1];
-        boolean[] visitedBfs = new boolean[N+1];
-        Stack<Integer> stack = new Stack<>();
-        Queue<Integer> queue = new LinkedList<>();
-        dfs.append(S);
-        bfs.append(S);
-        visitedDfs[S] = true;
-        visitedBfs[S] = true;
         
-        // Stacking && Queuing
-        for(int i=N; i>=1; i--){
-        	if(pointArr[S][i]){
-        		stack.push(i);
-        	}
-        	if(pointArr[S][N-i+1]){
-        		queue.offer(N-i+1);
+        // DFS - recursion
+        
+        sb = new StringBuilder();
+        visitedDfs = new boolean[n+1];
+        sb.append(s).append(" ");
+        visitedDfs[s] = true;
+        dfs(s);
+        
+        
+        
+        // BFS - Queue
+        StringBuilder bfs = new StringBuilder();
+        boolean[] visitedBfs = new boolean[n+1];
+        Queue<Integer> queue = new LinkedList<>();
+        bfs.append(s);
+        visitedBfs[s] = true;
+        
+        // Queue add
+        for(int i=1; i<=n; i++){
+        	if(pointArr[s][i]){
+        		queue.offer(i);
         	}
         }
         
-        // Stack과 Queue를 이용한 DFS & BFS
-		while(!stack.isEmpty()){
-			S = stack.pop();
-			if(!visitedDfs[S]) {
-				dfs.append(" ").append(S);
-				visitedDfs[S] = true;
-			}
-			for(int i=N; i>=1; i--){
-				if(pointArr[S][i] && !visitedDfs[i]){
-					stack.push(i);
-				}
-			}
-		}
-		
+        // BFS
 		while(!queue.isEmpty()){
-			S = queue.poll();
-			if(!visitedBfs[S]){
-				bfs.append(" ").append(S);
-				visitedBfs[S] = true;
+			int point = queue.poll();
+			if(!visitedBfs[point]){
+				bfs.append(" ").append(point);
+				visitedBfs[point] = true;
 			}
-			for(int i=1; i<N+1; i++){
-				if(pointArr[S][i] && !visitedBfs[i]){
+			for(int i=1; i<n+1; i++){
+				if(pointArr[point][i] && !visitedBfs[i]){
 					queue.offer(i);
 				}
 			}
 		}
-        System.out.println(dfs.toString());
+		
+        System.out.println(sb.toString());
         System.out.println(bfs.toString());
     }
 }
