@@ -9,6 +9,25 @@ public class Main {
 	
 	// 0,0 에서 18, 18까지 가므로 위를 탐색할 필요 없이 아래부분과 오른쪽 방향만 보면 된다
 	static int[][] deltas = {{1, 0}, {1, 1}, {1, -1}, {0, 1}};
+	
+	public static void solve(int r, int c, int searchColor, int[] delta) {
+		int testRow = r - delta[0];
+		int testCol = c - delta[1];
+		
+		// 반대 방향 확인 - delta의 반대 방향이 만약 찾던 돌이라면 6목이므로 게임 종료 X	
+		if(isOutOfRange(testRow, testCol) || map[testRow][testCol] != searchColor) {
+			// 게임이 끝났으므로 true
+			gameOver = true;
+			System.out.println(searchColor);
+			if(delta[0] == 1 && delta[1] == -1) {
+				System.out.println(r+4*delta[0] + " " + (int)(c + 4*delta[1]));
+			} else {
+				System.out.println(r + " " + c);
+			}
+		}
+
+	}
+	
 	public static boolean isOutOfRange(int r, int c) {
 		return r<=0 || r>19 || c<=0 || c>19;
 	}
@@ -25,21 +44,9 @@ public class Main {
 			if(isOutOfRange(nextRow, nextCol) || map[nextRow][nextCol] != searchColor) {
 				// 범위 밖이거나 찾는 색이 아니면 return
 				if(cnt == 5) {
-					
-					// 반대 방향 확인 - delta의 반대 방향이 만약 찾던 돌이라면 6목이므로 게임 종료 X
-					int testRow = r - delta[0];
-					int testCol = c - delta[1];
-					if(isOutOfRange(testRow, testCol) || map[testRow][testCol] != searchColor) {
-						// 게임이 끝났으므로 true
-						gameOver = true;
-						System.out.println(searchColor);
-						if(delta[0] == 1 && delta[1] == -1) {
-							System.out.println(r+4*delta[0] + " " + (int)(c + 4*delta[1]));
-						} else {
-							System.out.println(r + " " + c);
-						}
-					}
+					solve(r, c, searchColor, delta);
 				}
+				
 				return;
 			}
 			dfs(r, c, cnt+1, searchColor, delta);
