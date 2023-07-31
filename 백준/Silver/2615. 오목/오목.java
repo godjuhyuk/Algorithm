@@ -1,86 +1,100 @@
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	static boolean gameOver = false;
-	static int[][] map = new int[20][20];
-	static boolean[][] visited = new boolean[20][20];
-	
-	// 0,0 에서 18, 18까지 가므로 위를 탐색할 필요 없이 아래부분과 오른쪽 방향만 보면 된다
-	static int[][] deltas = {{1, 0}, {1, 1}, {1, -1}, {0, 1}};
-	
-	public static void solve(int r, int c, int searchColor, int[] delta) {
-		int testRow = r - delta[0];
-		int testCol = c - delta[1];
-		
-		// 반대 방향 확인 - delta의 반대 방향이 만약 찾던 돌이라면 6목이므로 게임 종료 X	
-		if(isOutOfRange(testRow, testCol) || map[testRow][testCol] != searchColor) {
-			// 게임이 끝났으므로 true
-			gameOver = true;
-			System.out.println(searchColor);
-			if(delta[0] == 1 && delta[1] == -1) {
-				System.out.println(r+4*delta[0] + " " + (int)(c + 4*delta[1]));
-			} else {
-				System.out.println(r + " " + c);
-			}
-		}
-
-	}
-	
-	public static boolean isOutOfRange(int r, int c) {
-		return r<=0 || r>19 || c<=0 || c>19;
-	}
-	public static void dfs(int r, int c, int cnt, int searchColor, int[] delta) {
-			
-			if(cnt > 5) {
-				return;
-			}
-		
-			// cnt 만큼 이동한 돌이 찾는 색깔인지 체크
-			int nextRow = r + cnt * delta[0];
-			int nextCol = c + cnt * delta[1];
-			
-			if(isOutOfRange(nextRow, nextCol) || map[nextRow][nextCol] != searchColor) {
-				// 범위 밖이거나 찾는 색이 아니면 return
-				if(cnt == 5) {
-					solve(r, c, searchColor, delta);
-				}
-				
-				return;
-			}
-			dfs(r, c, cnt+1, searchColor, delta);
-		}
+	static int[] dr = {1, 0, 1, -1}; // 방향 탐색용 델타 행 배열 {하단, 우단, 우하단, 우상단}
+	static int[] dc = {0, 1, 1, 1}; // 방향 탐색용 델타 열 배열 {하단, 우단, 우하단, 우상단}
 	
 	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // 빠른 입력을 위해 Scanner 대신 BufferedReader 사용
+		StringTokenizer st; // 공백으로 나뉜 문자열을 파싱하기 위해 StringTokenizer 사용
+		char[][] board = new char[19][19]; // 바둑판의 상태를 저장하는 2차원 배열
 		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		for(int i=1; i<=19; i++) {
-			String[] input = br.readLine().split(" ");
-			for (int j=1; j<=19; j++) {
-				map[i][j] = Integer.parseInt(input[j-1]);
-			}
-		}
-		for(int i=1; i<=19; i++) {
-			for(int j=1; j<=19; j++) {
-				// 한번 정한 방향으로 쭉 가야하므로 delta마다 dfs
-				for(int[] delta: deltas) {
-					if(map[i][j] == 1 && !gameOver) {
-						dfs(i, j, 1, 1, delta);
-					}
-					else if(map[i][j] == 2 && !gameOver) {
-						dfs(i, j, 1, 2, delta);
-					}
-				}
-				if(gameOver) {
-					return;
-				}
+		// 바둑판 상태 저장
+		for (int i = 0; i < board.length; i++) {
+			st = new StringTokenizer(br.readLine()); // StringTokenizer 객체에 입력 한 줄 할당, delimeter 지정하지 않으면 공백 기준으로 토큰화
+			for (int j = 0; j < board.length; j++) {
+				board[i][j] = st.nextToken().charAt(0); // char형 배열이기 때문에 String 형태를 char형으로 변환
 			}
 		}
 		
-		// 게임이 끝나지 않았다면
-		if(!gameOver) {
-			System.out.println(0);
+		boolean hasWinner = false; // 승자가 있는지 체크하는 boolean형 변수
+		fo : for (int i = 0; i < board.length; i++) { // 승자가 생기면 바로 탈출하기 위해 라벨링
+			for (int j = 0; j < board.length; j++) {
+				if (board[i][j] == '0') continue; // 돌이 없는 곳은 탐색할 필요 없음
+				
+				if (i <= board.length - 5) { // 하단으로 5개가 있으려면 5칸의 공간 필요
+					if (checkFive(board, i, j, 0)) { // 승자 체크 메서드
+						hasWinner = true; // 승자가 정해짐
+					}
+				}
+				
+				if (j <= board.length - 5) { // 우단으로 5개가 있으려면 5칸의 공간 필요
+					if (checkFive(board, i, j, 1)) { // 승자 체크 메서드
+						hasWinner = true; // 승자가 정해짐
+					}
+				}
+				
+				if (i <= board.length - 5 && j <= board.length - 5) {  // 우하단으로 5개가 있으려면 5칸의 공간 필요
+					if (checkFive(board, i, j, 2)) { // 승자 체크 메서드
+						hasWinner = true; // 승자가 정해짐
+					}
+				}
+				
+				if (i >= 4 && j <= board.length - 5) {  // 우상단으로 5개가 있으려면 5칸의 공간 필요
+					if (checkFive(board, i, j, 3)) { // 승자 체크 메서드
+						hasWinner = true; // 승자가 정해짐
+					}
+				}
+				
+				if (hasWinner) { // 승자가 정해졌다면
+					System.out.printf("%c%n%d %d", board[i][j], i + 1, j + 1); // 결과 출력
+					break fo;
+				}
+			}
+			
 		}
+		
+		if (!hasWinner) { // 전체 탐색했음에도 승자가 없다면
+			System.out.println(0); // 결과 출력
+		}
+	}
+
+	/**
+	 * 
+	 * @param board 바둑판
+	 * @param r 현재 행
+	 * @param c 연재 열
+	 * @param dir 탐색 방향
+	 * @return
+	 */
+	private static boolean checkFive(char[][] board, int r, int c, int dir) {
+		char nowColor = board[r][c]; // 현재 인덱스 바둑알 색깔
+		
+		int nextR, nextC;
+		for (int i = 0; i < 5; i++) { // 탐색 방향으로 5칸 탐색
+			nextR = r + dr[dir] * i;
+			nextC = c + dc[dir] * i;
+			
+			// 바둑알이 이어지지 않는다면 false 반환
+			if (board[nextR][nextC] != nowColor) return false;
+		}
+		
+		// 탐색 반대방향의 바둑알이 연속되면 6칸 이상이 연속되는 것이므로 탐색 반대방향 체크
+		nextR = r - dr[dir];
+		nextC = c - dc[dir];
+		if (isInRange(nextR, nextC) && board[nextR][nextC] == nowColor) return false;
+		
+		// 탐색 방향의 6칸째 지점이 연속되면 6칸 이상이 연속되는 것이므로 6칸째 체크
+		nextR = r + dr[dir] * 5;
+		nextC = c + dc[dir] * 5;
+		if (!isInRange(nextR, nextC) || board[nextR][nextC] != nowColor) return true;
+		return false;
+	}
+
+	// 바툭판 크기를 벗어나는지 체크하는 메서드
+	private static boolean isInRange(int r, int c) {
+		return r >= 0 && r < 19 && c >= 0 && c < 19;
 	}
 }
