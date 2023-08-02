@@ -1,48 +1,72 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
-    static void changeSwitch(int n, int sex, int getNum, int[] switchInfo){
-        if(sex==1){
-            for(int i = getNum-1; i< n; i+= getNum){
-                switchInfo[i] = 1 - switchInfo[i];
-            }
-        } else {
-            int idx = 1;
-            getNum -= 1;
-            switchInfo[getNum] = 1 - switchInfo[getNum];
-            while(getNum+idx <n && getNum-idx >-1){
-            	if(switchInfo[getNum+idx] == switchInfo[getNum-idx]){
-	                switchInfo[getNum + idx] = 1 - switchInfo[getNum + idx];
-	                switchInfo[getNum - idx] = 1 - switchInfo[getNum - idx];
-	                idx +=1;
-            	} else {
-            		break;
-            	}
-        	}
-	    }
-    }
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[] switchInfo = new int[n];
-        String[] input;
-        input = br.readLine().split(" ");
-        for(int i = 0; i < n; i++){
-            switchInfo[i] = Integer.parseInt(input[i]);                     
-        }
-        int stdNum = Integer.parseInt(br.readLine());
-        int sex, getNum;
-        for(int i = 0; i< stdNum; i++){
-            input = br.readLine().split(" ");
-            sex = Integer.parseInt(input[0]);
-            getNum = Integer.parseInt(input[1]);
-            changeSwitch(n, sex, getNum, switchInfo);
-        }
-        
-        for(int i=0; i< n; i++){
-            if(i%20 == 0 && i>0) System.out.print("\n");
-            System.out.printf("%d ", switchInfo[i]);
-            
-        }
-    }
+	private static int[] switchList;
+	
+	private static void change(int sex, int num) {
+		
+		if(sex == 1) {
+			
+			for(int i=0; i<switchList.length; i++) {
+
+				if( (i+1) % num == 0) {
+					
+					switchList[i] = 1 - switchList[i];
+				}
+			}
+		} else {
+			
+			int idx = num - 1;
+			int length = 1;
+			
+			// 시작점 바꾸기 
+			switchList[idx] = 1 - switchList[idx];
+			while(true) {
+				
+				// 범위 초과 or 대칭이 아니면 break
+				if(idx+length >= switchList.length || idx-length < 0 || switchList[idx+length] != switchList[idx-length]) {
+					break;
+				}
+				
+				switchList[idx+length] = 1 -switchList[idx+length];
+				switchList[idx-length] = 1 -switchList[idx-length];
+				length++;
+				
+			}
+			
+		}
+		
+	}
+	
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int n = Integer.parseInt(br.readLine());
+		switchList = Arrays.stream(br.readLine().split(" "))
+							.mapToInt(Integer::parseInt)
+							.toArray();
+		
+		int m = Integer.parseInt(br.readLine());
+		
+		for(int i=0; i<m; i++) {
+			String[] input = br.readLine().split(" ");
+			int sex = Integer.parseInt(input[0]);
+			int num = Integer.parseInt(input[1]);
+			
+			change(sex, num);
+		}
+		
+		for(int i=0; i<switchList.length; i++) {
+			if(i>0 && i % 20 == 0) {
+				sb.append("\n");
+			}
+			sb.append(switchList[i]).append(" ");
+		}
+		System.out.println(sb.toString());
+		
+	}
 }
