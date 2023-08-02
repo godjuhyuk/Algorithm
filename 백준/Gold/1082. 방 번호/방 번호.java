@@ -80,6 +80,7 @@ public class Main {
             }
         }
         
+        // 정렬 원위치
         Arrays.sort(numbers, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
@@ -88,7 +89,7 @@ public class Main {
             }
         });
 
-
+        // ansList가 빈 배열이라면 0
         if(ansList.size() == 0) {
             System.out.println(0);
             return;
@@ -97,10 +98,8 @@ public class Main {
         	for(int i=0; i<ansList.size(); i++) {
                 int maxNumber = ansList.get(i);
                 for(int j=0; j<n; j++) {
-                	// numbers를 순회해가며 max number보다 큰데 구매가 가능하다면 교체
-//                	if(numbers[j][0] > maxNumber) {
-//                		System.out.println(i+"th : " + numbers[j][0]+  " > " + maxNumber + " " + maxMoney);
-//                	}
+                	
+                	// numbers를 순회해가며 max number보다 큰데 구매가 가능하다면 구매한다.
                     if(numbers[j][0] > maxNumber && maxMoney + numbers[maxNumber][1] - numbers[j][1] >= 0) {
                     	maxMoney += numbers[maxNumber][1] - numbers[j][1] ;
                         ansList.set(i, numbers[j][0]);
@@ -108,6 +107,7 @@ public class Main {
                     }
                 }
             }
+        	
             for(int i=0; i<ansList.size(); i++) {
                 sb.append(ansList.get(i));
             }
