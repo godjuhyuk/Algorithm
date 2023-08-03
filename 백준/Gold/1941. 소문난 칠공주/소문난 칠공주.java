@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -15,11 +14,6 @@ public class Main {
     
     private static int bfs( boolean[] visited) {
     	int checkCount = 0;
-//        YYYYY
-//        SYSYS
-//        YYYYY
-//        YSYYS
-//        YYYYY
         while(!checkQueue.isEmpty()) {
         	int seatIdx = checkQueue.poll();
         	visited[seatIdx] = false;
@@ -44,20 +38,20 @@ public class Main {
     private static void isLinked() {
     	
         int cnt = 0 ;
-        boolean[] dasomInfo = new boolean[25];
+        boolean[] visited = new boolean[25];
         for(int i=0; i<combList.length; i++) {
             int seatIdx = combList[i];
             if(seatInfo[seatIdx] == 'S') {
                 cnt++;
             }
-            dasomInfo[seatIdx] = true;
+            visited[seatIdx] = true;
         }
         // 다솜파 결성 조건 불만족
         if(cnt < 4) {
             return;
         }
         checkQueue.add(combList[0]);
-        if(bfs(dasomInfo) == 7) {
+        if(bfs(visited) == 7) {
         	ans++;
         };
     }
@@ -67,7 +61,7 @@ public class Main {
             return;
         }
         
-        for(int i=start; i<25; i++) { //일단 25 && 여기서 다솜파/비다솜파 체크한다음 바로 리턴해줘도됨
+        for(int i=start; i<25; i++) { //여기서 다솜파/비다솜파 체크한다음 바로 리턴해줘도됨
                 combList[cnt] = i;
                 comb(cnt+1, i+1);
         }
@@ -75,7 +69,6 @@ public class Main {
     
     public static void main(String[] args) throws IOException
     {
-        
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         seatInfo = new char[25];
         combList = new int[7];
