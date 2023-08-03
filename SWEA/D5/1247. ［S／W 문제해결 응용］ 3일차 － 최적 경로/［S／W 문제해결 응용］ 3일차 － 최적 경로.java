@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 	public class Solution {
 		
 		private static int n, ans;
-		private static int[] combList;
 		private static boolean[] isSelected;
 		private static Location[] customerInfo;
 		private static Location homeInfo, compInfo;
@@ -15,21 +14,6 @@ import java.io.BufferedReader;
 		private static int calculateDist(Location a, Location b) {
 			return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 		}
-		
-		
-//		public static int getDistance() {
-//			// 거리 합 계산
-//			int distSum = calculateDist(compInfo, customerInfo[combList[0]]);
-//			for(int i=0; i<n-1; i++) {
-//				if(distSum > ans) {
-//					return ans+1;
-//				}
-//				distSum += calculateDist(customerInfo[combList[i]], customerInfo[combList[i+1]]);
-//			}
-//			distSum += calculateDist(customerInfo[combList[n-1]], homeInfo);
-//			return distSum;
-//		}
-		
 		
 		private static  void perm(int cnt, int sum, Location lastLoc) {
 			if(cnt == n) {
@@ -61,7 +45,6 @@ import java.io.BufferedReader;
 			for(int testCase = 1; testCase <= T; testCase++) {
 				ans = Integer.MAX_VALUE;
 				n = Integer.parseInt(br.readLine());
-				combList = new int[n];
 				isSelected = new boolean[n];
 				customerInfo = new Location[n+2];
 				String[] input = br.readLine().split(" ");
