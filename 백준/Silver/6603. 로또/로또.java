@@ -27,39 +27,44 @@ import java.util.Stack;
  * 2-2) 뽑아낸 경우의 수 중 count++를 이용하여 count == 6일때 출력한다
  * 
  * 시간복잡도 상 풀이1이 우위지만 이미 풀어봤기 때문에 풀이2를 이용하여 문제를 풀어보자.
+ * 
+ * ==> 부분집합으로 뽑아냈을때 오름차순으로 뽑히지가 않고, 정렬하기도 번거로우므로 풀이2 포기
  * @author SSAFY
  *
  */
 public class Main {
 	static int[] temp;
-	static Stack<Integer> stack;
+	static int[] combList;
 	static StringBuilder sb;
 	public static void dfs(int start, int depths) {
 		if(depths == 6) {
 			for(int i=0; i<6; i++) {
-				sb.append(stack.get(i)).append(" ");
+				sb.append(combList[i]).append(" ");
 			}
 			sb.append("\n");
 			return;
 		}
 		
 		for(int i=start; i<temp.length; i++) {
-				stack.add(temp[i]);
+				combList[depths] = temp[i];
 				dfs(i+1, depths+1);
-				stack.pop();
 		}
 	}
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		sb = new StringBuilder();
+		
 		while(true) {
 			String[] input = br.readLine().split(" ");
+
+			// 종료 조건
 			if(input[0].equals("0")) {
 				break;
 			}
+			
+			combList = new int[6];
 			temp = new int[input.length-1];
-			stack = new Stack<>();
 			for(int i=1; i<input.length; i++) {
 				temp[i-1] = Integer.parseInt(input[i]);
 			}
