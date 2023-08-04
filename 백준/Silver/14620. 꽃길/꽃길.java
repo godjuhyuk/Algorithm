@@ -56,8 +56,13 @@ public class Main {
 		}
 		
 		public boolean isSafe(Flower f) {
+            
+            if(Math.abs(this.row-f.row) +Math.abs(this.col - f.col) >=3){
+                return true;
+            }
+            
 			int[][] tempMap = new int[n+1][n+1];
-		
+            
 			// 내 꽃술 & 꽃잎 위치를 전부 -1로 초기화
 			tempMap[this.row][this.col] = -1;
 			for(int[] d : deltas ) {
