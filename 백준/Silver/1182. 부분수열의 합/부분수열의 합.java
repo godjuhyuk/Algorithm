@@ -48,7 +48,6 @@ import java.util.Arrays;
 public class Main {
 	private static int N, S, ans1, ans2;
 	private static int[] input, numList;
-	private static boolean[] isSelected;
 	
 	public static void main(String[] args) throws IOException
 	{	
@@ -68,7 +67,6 @@ public class Main {
 		
 		N = input[0];
 		S = input[1];
-		isSelected = new boolean[N];
 		
 		
 		// 재귀 함수 이용
@@ -80,46 +78,19 @@ public class Main {
 		
 	}
 	
-	private static void isSumEqualS() {
-		
-		int tempSum = 0;
-		int noElementCnt = 0;
-		
-		for(int i=0; i<N; i++) {
-			if(isSelected[i]) {
-				noElementCnt++;
-				tempSum += numList[i];
-			}
-		}
-		if(noElementCnt == 0 ) {
-			return;
-		}
-		else if(tempSum == S) {
-			ans1++;
-			return;
-		}
-	}
-	
 	// 부분집합을 구하는 재귀 함수
-	private static void getPowerSet(int depths, int start) {
+	private static void getPowerSet(int depths, int sum) {
 		
 		// 기저조건
 		if(depths == N) {
-			isSumEqualS();
+			if(sum==S) {
+				ans1++;
+			}
 			return;
 		}
 		
-			
-		if(isSelected[depths]) {
-			return;
-		}
-		
-		isSelected[depths] = true;
-		getPowerSet(depths+1, depths+1);
-		isSelected[depths] = false;
-		getPowerSet(depths+1, depths+1);
-		
-		
+		getPowerSet(depths+1, sum+numList[depths]);
+		getPowerSet(depths+1, sum);
 		
 	}
 	
@@ -127,13 +98,29 @@ public class Main {
 	private static void solve1() {
 		
 		getPowerSet(0, 0);
-		System.out.println(ans1);
+		if(S == 0) {
+			System.out.println(ans1 - 1);
+		} else {
+			System.out.println(ans1);
+		}
 	}
 	
 	// 비트마스킹을 이용한 풀이
 	private static void solve2() {
-		// TODO Auto-generated method stub
 
-//		System.out.println(ans2);
+		// 원소는 양의 길이를 가지므로 flag는 1부터 고려
+		for(int flag = 1; flag < Math.pow(2, N); flag++) {
+			int tempSum = 0;
+			for(int i=0; i<N; i++) {
+				if( (flag & 1<<i) > 0 ) {
+					tempSum += numList[i];
+				}
+			}
+			if(tempSum == S) {
+				ans2++;
+			}
+			
+		}
+		System.out.println(ans2);
 	}
 }
