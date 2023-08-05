@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class Main {
+class Main {
 	
 	private static int N, limit;
 	private static int[] numArr, permArr;
@@ -39,22 +39,21 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		sb = new StringBuilder();
 
-		int[] input = Arrays.stream(br.readLine()
-							.split(" "))
-							.mapToInt(Integer::parseInt)
-							.toArray();
+		String[] input = br.readLine().split(" ");
 		
-		N = input[0];
+		
+		N = Integer.parseInt(input[0]);
+		limit = Integer.parseInt(input[1]);
+		
+		numArr = new int[N];
+		permArr = new int[limit];
 		isSelected = new boolean[N];
 		
-		limit = input[1];
-		permArr = new int[limit];
+		input = br.readLine().split(" ");
+		for(int i=0; i<N; i++) {
+			numArr[i] = Integer.parseInt(input[i]);
+		}
 		
-		
-		numArr = Arrays.stream(br.readLine()
-				.split(" "))
-				.mapToInt(Integer::parseInt)
-				.toArray();
 		
 		Arrays.sort(numArr);
 		
