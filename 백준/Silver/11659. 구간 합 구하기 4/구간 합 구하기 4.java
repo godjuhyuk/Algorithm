@@ -1,7 +1,7 @@
 /**
 * 풀이 시작 : 오후 1:07
-* 풀이 완료 :
-* 풀이 시간 :
+* 풀이 완료 : 오후 1:30
+* 풀이 시간 : 23분
 *
 * 문제 해석
 * 
@@ -40,7 +40,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 class Main {
 	
@@ -48,33 +48,25 @@ class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
 		
-		String[] input = br.readLine().split(" ");
-		int N = Integer.parseInt(input[0]);
-		int M = Integer.parseInt(input[1]);
+		st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
 	
-		int[] numArr = new int[N];
-//		int[] numArr = Arrays.stream(br.readLine().split(" "))
-//								.mapToInt(Integer::parseInt)
-//								.toArray();
+		int[] numArr = new int[N+1];
 		
-		input = br.readLine().split(" ");
-
-		numArr[0] = Integer.parseInt(input[0]);
-		for(int i=1; i<N; i++) {
-			numArr[i] = Integer.parseInt(input[i]) + numArr[i-1];
+		st = new StringTokenizer(br.readLine());
+		numArr[1] = Integer.parseInt(st.nextToken());
+		for(int i=2; i<N+1; i++) {
+			numArr[i] = Integer.parseInt(st.nextToken()) + numArr[i-1];
 		}
-		
 		for(int i=0; i<M; i++) {
-			input = br.readLine().split(" ");
-			int a = Integer.parseInt(input[0]) - 1;
-			int b = Integer.parseInt(input[1]) - 1;
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken())-1;
+			int b = Integer.parseInt(st.nextToken());
 			
-			if(a==0) {
-				sb.append(numArr[b]).append('\n');
-			} else {
-				sb.append(numArr[b] - numArr[a-1]).append('\n');
-			}
+			sb.append(numArr[b] - numArr[a]).append('\n');
 		}
 		
 		System.out.println(sb);
