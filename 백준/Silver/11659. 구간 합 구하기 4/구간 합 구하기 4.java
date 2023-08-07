@@ -53,13 +53,16 @@ class Main {
 		int N = Integer.parseInt(input[0]);
 		int M = Integer.parseInt(input[1]);
 	
-		int[] numArr = Arrays.stream(br.readLine().split(" "))
-								.mapToInt(Integer::parseInt)
-								.toArray();					
+		int[] numArr = new int[N];
+//		int[] numArr = Arrays.stream(br.readLine().split(" "))
+//								.mapToInt(Integer::parseInt)
+//								.toArray();
 		
-		
+		input = br.readLine().split(" ");
+
+		numArr[0] = Integer.parseInt(input[0]);
 		for(int i=1; i<N; i++) {
-			numArr[i] += numArr[i-1];
+			numArr[i] = Integer.parseInt(input[i]) + numArr[i-1];
 		}
 		
 		for(int i=0; i<M; i++) {
