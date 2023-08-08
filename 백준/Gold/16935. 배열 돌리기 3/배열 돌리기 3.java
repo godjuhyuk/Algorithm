@@ -48,8 +48,6 @@ public class Main {
 	private static int[][] deltas = {{0, 0}, {0, 1}, {1, 1}, {1, 0}};
 	
 	private static void rotateSubCounterClock() {
-		N = map.length;
-		M = map[0].length;
 		
 		int aCnt = 0;
 		int bCnt = 0;
@@ -80,9 +78,6 @@ public class Main {
 	
 	private static void rotateSubClock() {
 		
-		N = map.length;
-		M = map[0].length;
-		
 		int aCnt = 0;
 		int bCnt = 0;
 		int[] order = {3, 0, 2, 1};
@@ -111,8 +106,6 @@ public class Main {
 	}
 	
 	private static void rotateCounterClock() {
-		N = map.length;
-		M = map[0].length;
 		int[][] tempMap = new int[M][N];
 		
 		for(int i=0; i<N; i++) {
@@ -122,12 +115,12 @@ public class Main {
 		}
 		
 		map = tempMap;
+		N = map.length;
+		M = map[0].length;
 		return;
 	}
 	
 	private static void rotateClock() {
-		N = map.length;
-		M = map[0].length;
 		
 		int[][] tempMap = new int[M][N];
 		for(int i=0; i<N; i++) {
@@ -137,12 +130,14 @@ public class Main {
 		}
 		
 		map = tempMap;
+		
+		N = map.length;
+		M = map[0].length;
+		
 		return;
 	}
 	
 	private static void reverseLR() {
-		N = map.length;
-		M = map[0].length;
 		int[][] tempMap = new int[N][M];
 		
 		for(int i=0; i<N; i++) {
@@ -150,19 +145,19 @@ public class Main {
 				tempMap[i][j] = map[i][M-j-1];
 			}
 		}
+		
 		map = tempMap;
 		return;
 	}
 	
 	private static void reverseUd() {
-		N = map.length;
-		M = map[0].length;
 		
 		int[][] tempMap = new int[N][M];
 		
 		for(int i=N-1; i>=0; i--) {
 			tempMap[i] = map[N-i-1];
 		}
+		
 		map = tempMap;
 		return;
 	}
