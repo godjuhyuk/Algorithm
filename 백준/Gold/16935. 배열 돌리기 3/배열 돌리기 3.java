@@ -193,6 +193,25 @@ public class Main {
 
 	}
 	
+	private static boolean cmdCheck(int cmd, Stack<Integer> stack) {
+		if(cmd==1 && stack.peek() == 1) {
+			stack.pop();
+			return false;
+		}
+		else if(cmd==2 && stack.peek() == 2) {
+			stack.pop();
+			return false;
+		}
+		else if( (cmd==3 && stack.peek() == 4) || (cmd==4 && stack.peek() == 3)) {
+			stack.pop();
+			return false;
+		}
+		else if( (cmd==5 && stack.peek() == 6) || (cmd==6 && stack.peek() == 5)) {
+			stack.pop();
+			return false;
+		}
+		return true;
+	}
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -211,14 +230,17 @@ public class Main {
 		}
 		
 		input = br.readLine().split(" ");
-		int[] cmdArr = new int[R];
+		Stack<Integer> cmdStack = new Stack();
+		
 		for(int i=0; i<R; i++) {
 			int cmd = Integer.parseInt(input[i]);
-			cmdArr[i] = cmd;
+			if(cmdStack.isEmpty() || cmdCheck(cmd, cmdStack)) {
+				cmdStack.add(cmd);
+			}
 		}
-		
-		for(int i=0; i<cmdArr.length; i++) {
-			matrixMove(cmdArr[i]);
+		for(int i=0; i<cmdStack.size(); i++) {
+			
+			matrixMove(cmdStack.get(i));
 		}
 		
 		StringBuilder sb = new StringBuilder();
