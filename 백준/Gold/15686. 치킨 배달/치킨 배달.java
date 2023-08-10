@@ -1,72 +1,105 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+/**
+ * 
+ * 조합 문제로, 치킨집 중 M개를 뽑아서 치킨 거리를 계산한다.
+ * 
+ * 재귀를 이용해서 풀면 될듯?
+ * 
+ * 구현해야할 것:
+ * 
+ * 1. MAP 입력받기 & 집개수, 치킨집 개수 count
+ * 2. 재귀를 이용한 재귀 구현
+ * 	- 기저조건 : count == M
+ * 3. 최단거리 갱신
+ * 
+ * 
+ * 예상 시간 복잡도 : O(N^2 + 13CM * 2N) 
+ * 
+ * @author SSAFY
+ */
 public class Main {
-	static int n, m, min;
-	static boolean[] visited;
-    static ArrayList<int[]> homeInfo;
-    static ArrayList<int[]> chickenInfo;
-    
-    public static void dfs(int start, int cnt) {
-    	
-    	// m개의 치킨집을 전부 방문했으면 작동
-        if(cnt == m) {
-        	int sum = 0;
-        	for(int i=0; i< homeInfo.size(); i++) {
-        		
-        		int minDist = Integer.MAX_VALUE;
-        		int[] tempHome = homeInfo.get(i);
-				
-        		for(int j=0; j<visited.length; j++) {
-					if(visited[j]) {
-        				int[] tempChicken = chickenInfo.get(j);
-        				minDist = Math.min(minDist, Math.abs(tempHome[0] - tempChicken[0]) + Math.abs(tempHome[1] - tempChicken[1]));
-					}
-        		}
-				sum+= minDist;
-				if(sum >= min) {
-					return;
+	
+	private static int N, M, ans;
+	private static int[] combList;
+	private static int[][] map;
+	private static List<int[]> homeList, chickenList;
+	
+	private static int getDistance(int[] home, int[] chicken) {
+		
+		return Math.abs(home[0] - chicken[0]) + Math.abs(home[1] - chicken[1]);
+	}
+	
+	private static int getBestDistance() {
+		int bestDistance = 0;
+		
+		for(int i=0; i<homeList.size(); i++) {
+			int minDist = Integer.MAX_VALUE;
+			for(int idx = 0; idx < M; idx++) {
+				minDist = Math.min(minDist, getDistance(homeList.get(i), chickenList.get(combList[idx])));
+			}
+			bestDistance += minDist;
+		}
+		return bestDistance;
+	}
+	
+	
+	private static void comb(int cnt, int start) {
+		
+		if(cnt == M) {
+			ans = Math.min(ans, getBestDistance());
+			return;
+		}
+		
+		for(int i=start; i< chickenList.size(); i++) {
+			combList[cnt] = i;
+			comb(cnt+1, i+1);
+		}
+ 
+	}
+	
+	public static void main(String[] args) throws IOException
+	{
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		homeList = new ArrayList<>();
+		chickenList = new ArrayList<>();
+		
+		String[] input = br.readLine().split(" ");
+		
+		N = Integer.parseInt(input[0]);
+		M = Integer.parseInt(input[1]);
+		ans = Integer.MAX_VALUE;
+		
+		map = new int[N][N];
+		
+		// 치킨집 및 손님집 정보 추가 
+		for(int i=0; i<N; i++) {
+			input = br.readLine().split(" ");
+			for(int j=0; j<N; j++) {
+				map[i][j] = Integer.parseInt(input[j]);
+				if(map[i][j] == 1) {
+					homeList.add(new int[] {i, j});
 				}
-        	}
-        	min = Math.min(sum, min);
-        	return;
-        }
-        
-        for(int i=start; i<chickenInfo.size(); i++) {
-        	visited[i] = true;
-        	dfs(i+1, cnt+1);
-        	visited[i] = false;
-        }
-    	
-        return;
-    }
+				else if(map[i][j] == 2) {
+					chickenList.add(new int[] {i, j});
+				}
+			}
+		}
+		
+		
+		combList = new int[M];
+		
+		comb(0, 0);
+		
+		System.out.println(ans);
+		
+	}
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
-        n = Integer.parseInt(input[0]);
-        m = Integer.parseInt(input[1]);
-        min = Integer.MAX_VALUE;
-        homeInfo = new ArrayList<>();
-        chickenInfo = new ArrayList<>();
-
-        // 치킨집 위치와 집 위치를 각각 저장
-        for(int i=1; i<=n; i++) {
-            String[] temp = br.readLine().split(" ");
-            for(int j=1; j<=n; j++) {
-                if(temp[j-1].equals("2")) {
-                    chickenInfo.add(new int[] {i,j});
-                }
-                else if(temp[j-1].equals("1")) {
-                    homeInfo.add(new int[] {i,j});
-                }
-            }
-        }
-        visited = new boolean[chickenInfo.size()];
-        dfs(0, 0);
-        System.out.println(min);
-        br.close();
-    }
 }
-
-
