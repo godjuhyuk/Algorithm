@@ -1,121 +1,66 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-/**
- * 문제 링크)
- * https://www.acmicpc.net/problem/12891
- * 
- * 비밀먼호 성립 조건을 만족하는 길이가 P인 순열을 구하는 문제이다.
- * 처음 입력을 훑으면서 count hash Map을 만든다.
- * 
- * => 근데 순열로 풀면 시간복잡도가 감당이 가능한가?
- *
- * 문제를 잘못 이해했었다!
- * 부분문자열이므로 하나 하나 뽑아서 비밀번호를 만드는게 아니고
- * 부분 부분 통째로 토막내서 풀면됨
- * => 슬라이딩 윈도우 사용 (시간복잡도 O(N)) 
- * 
- * @author SSAFY
- *
- */
 public class Main {
-	
-	private static int S, P, count;
-	private static String str;
-	
-	private static void isAbleToBePassword(int[] window, int[] conditionArr) {
-		
-		for(int i=0; i<4; i++) {
-			if(window[i] < conditionArr[i]) {
-				return;
-			}
-		}
-		
-		count++;
-		
-	}
-	private static void setWindow(int[] window, int newIdx, int originIdx) {
-		switch(str.charAt(originIdx)) {
-		case 'A':
-			window[0]--;
-			break;
-		case 'C':
-			window[1]--;
-			break;
-		case 'G':
-			window[2]--;
-			break;
-		case 'T':
-			window[3]--;
-			break;
-		}
-		
-		switch(str.charAt(newIdx)) {
-		case 'A':
-			window[0]++;
-			break;
-		case 'C':
-			window[1]++;
-			break;
-		case 'G':
-			window[2]++;
-			break;
-		case 'T':
-			window[3]++;
-			break;
-		}
-		
-	}
-	
+
 	public static void main(String[] args) throws IOException {
-		
-		count = 0;
-		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int S = Integer.parseInt(st.nextToken());
+		int P = Integer.parseInt(st.nextToken());
+		int cnt = 0;
 		
-		String[] input = br.readLine().split(" ");
-		S = Integer.parseInt(input[0]);
-		P = Integer.parseInt(input[1]);
+		char[] chr = new char[] {'A', 'C', 'G', 'T'};
+		// 문자열 count용도
+		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		// 비밀번호 조건 저장 map
+		HashMap<Character, Integer> check = new HashMap<Character, Integer>();
+		//비교할 문자열 대기 큐
+		Queue<Character> queue = new LinkedList<Character>();
+		map.put('A', 0);
+		map.put('C', 0);
+		map.put('G', 0);
+		map.put('T', 0);
 		
-		str = br.readLine();
 		
-		input = br.readLine().split(" ");
+		//문자열 입력받기 (A,C,G,T)순
+		String str = br.readLine();
 		
-		int[] conditionArr = new int[4];
-		for(int i=0; i<4; i++) {
-			conditionArr[i] = Integer.parseInt(input[i]); 
-		}
+		//비밀번호 조건
+		st = new StringTokenizer(br.readLine());
+		check.put('A', Integer.parseInt(st.nextToken()));
+		check.put('C', Integer.parseInt(st.nextToken()));
+		check.put('G', Integer.parseInt(st.nextToken()));
+		check.put('T', Integer.parseInt(st.nextToken()));
 		
 		// 초기값 세팅
-		int[] window = new int[4];
-		for(int i=0; i<P; i++) {
-			switch(str.charAt(i)) {
-			case 'A':
-				window[0]++;
-				break;
-			case 'C':
-				window[1]++;
-				break;
-			case 'G':
-				window[2]++;
-				break;
-			case 'T':
-				window[3]++;
-				break;
+		for(int i=0; i<P-1; i++) {
+			queue.add(str.charAt(i));
+			map.put(str.charAt(i), map.get(str.charAt(i))+1);
+		}
+		
+		
+		//입력받은 문자열 char 배열로 만들기
+		for(int i = P-1; i<S; i++) {
+			
+			queue.add(str.charAt(i));
+			map.put(str.charAt(i), map.get(str.charAt(i))+1);
+			
+			if(map.get(chr[0]) >= check.get(chr[0]) && map.get(chr[1]) >= check.get(chr[1]) && map.get(chr[2]) >= check.get(chr[2]) && map.get(chr[3]) >= check.get(chr[3])) {
+				cnt++;
 			}
+			
+			char temp = queue.poll();
+			map.put(temp, map.get(temp)-1);
+				
 		}
-		isAbleToBePassword(window, conditionArr);
+		System.out.println(cnt);
 		
-		
-		// 슬라이딩 윈도우 구현
-		for(int i=P, j=0; i<S; i++, j++) {
-			setWindow(window, i, j);
-			isAbleToBePassword(window, conditionArr);
-		}
-		
-		System.out.println(count);
 	}
-	
+
 }
