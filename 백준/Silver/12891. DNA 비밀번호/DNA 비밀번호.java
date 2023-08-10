@@ -8,6 +8,12 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+	private static char[] chr;
+	private static HashMap<Character, Integer> map, check;
+	private static boolean  passwordCheck() {
+		return map.get(chr[0]) >= check.get(chr[0]) && map.get(chr[1]) >= check.get(chr[1]) && map.get(chr[2]) >= check.get(chr[2]) && map.get(chr[3]) >= check.get(chr[3]);
+	}
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -15,11 +21,11 @@ public class Main {
 		int P = Integer.parseInt(st.nextToken());
 		int cnt = 0;
 		
-		char[] chr = new char[] {'A', 'C', 'G', 'T'};
+		chr = new char[] {'A', 'C', 'G', 'T'};
 		// 문자열 count용도
-		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		map = new HashMap<Character, Integer>();
 		// 비밀번호 조건 저장 map
-		HashMap<Character, Integer> check = new HashMap<Character, Integer>();
+		check = new HashMap<Character, Integer>();
 		//비교할 문자열 대기 큐
 		Queue<Character> queue = new LinkedList<Character>();
 		map.put('A', 0);
@@ -51,7 +57,7 @@ public class Main {
 			queue.add(str.charAt(i));
 			map.put(str.charAt(i), map.get(str.charAt(i))+1);
 			
-			if(map.get(chr[0]) >= check.get(chr[0]) && map.get(chr[1]) >= check.get(chr[1]) && map.get(chr[2]) >= check.get(chr[2]) && map.get(chr[3]) >= check.get(chr[3])) {
+			if(passwordCheck()) {
 				cnt++;
 			}
 			
