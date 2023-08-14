@@ -26,20 +26,19 @@ import java.util.Arrays;
  */
 public class Main {
 	
-	private static String ans;
+	private static StringBuilder sb;
 	private static char[][] map;
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+		sb = new StringBuilder();
 		int N = Integer.parseInt(br.readLine());
 		map = new char[N][N];
 		for(int i=0; i<N; i++) {
 			map[i] = br.readLine().toCharArray();
 		}
-		ans = "";
 		divideAndConquer(0, 0, N);
-		System.out.println(ans);
+		System.out.println(sb);
 	}
 	
 	private static void divideAndConquer(int r, int c, int size) {
@@ -51,19 +50,19 @@ public class Main {
 			}
 		}
 		if(sum == 0) {
-			ans += "0";
+			sb.append('0');
 		}
 		else if(sum == size*size) {
-			ans += "1";
+			sb.append('1');
 		}
 		else {
-			ans += "(";
+			sb.append('(');
 			int half = size/2;
 			divideAndConquer(r, c, half);
 			divideAndConquer(r, c+half, half);
 			divideAndConquer(r+half, c, half);
 			divideAndConquer(r+half, c+half, half);
-			ans += ")";
+			sb.append(')');
 		}
 	}
 }
