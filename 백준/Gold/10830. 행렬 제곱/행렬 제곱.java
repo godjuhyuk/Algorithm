@@ -32,7 +32,7 @@ public class Main {
 		
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<N; j++) {
-				sb.append(ans[i][j]).append(' ');
+				sb.append(ans[i][j]%1000).append(' ');
 			}
 			sb.append('\n');
 		}
@@ -43,11 +43,6 @@ public class Main {
 		
 		
 		if(B == 1) {
-			for(int i=0; i<N; i++) {
-				for(int j=0; j<N; j++) {
-					matrix[i][j] %= 1000;
-				}
-			}
 			return matrix;
 		}
 		else if (B == 2) {
