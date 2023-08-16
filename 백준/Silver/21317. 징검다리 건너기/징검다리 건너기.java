@@ -9,6 +9,12 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
 		int N = Integer.parseInt(st.nextToken());
+		
+		if(N==1) {
+			System.out.println(0);
+			return;
+		}
+		
 		int[][] jump = new int[N+1][2];
 		int[][] dp = new int[N+1][2];
 		
@@ -26,10 +32,6 @@ public class Main {
 		st = new StringTokenizer(br.readLine());
 		int K = Integer.parseInt(st.nextToken());
 		
-		if(N==1) {
-			System.out.println(0);
-			return;
-		}
 		
 		if(N==2) {
 			System.out.println(jump[1][0]);
