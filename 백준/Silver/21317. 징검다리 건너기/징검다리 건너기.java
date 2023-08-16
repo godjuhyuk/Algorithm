@@ -3,31 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-/**
- * 
- * 1번 돌부터 N-1돌까지 각 점프 당 필요한 에너지양이 다음과 같이 주어진다.
- * [작은 점프, 큰 점프]
- * 
- * K는 딱 한번 엄청 큰 점프를 할 수 있는 에너지 필요량이다.
- * 
- * 점화식을 구해보자.
- * 
- * dp[x] : x번째돌까지 뛰었을때의 최소 필요량
- * 
- * K가 한번 쓰였다는걸 어떻게 반영해야할까? 
- * => 1번째 idx에 boolean을 넣어볼까?
- * 
- * 초기값 : dp[1] = 0, dp[2] = jump[1][0]
- * i >= 3 에 대해,
- * dp[i] = Math.min(dp[i],
- * 					dp[i-1] + jump[i-1][0],
- * 					dp[i-2] + jump[i-2][1],
- * 					dp[i-3] + K)
- * 					 
- * 
- * @author SSAFY
- *
- */
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
