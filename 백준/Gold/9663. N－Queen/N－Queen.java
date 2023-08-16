@@ -1,62 +1,59 @@
-import java.util.*;
-import java.io.*;
+import java.util.Scanner;
+
+// 놓아진 퀸의 열 번호를 기록하는 버전
 public class Main {
-	static int n, cnt;
-	static int[][] map;
 	
-	public static void reloadMap(int r, int c) {
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<n; j++) {
-				if(map[i][j] == r+1) {
-					map[i][j] = 0;
-				}
-			}
-		}
-	}
+	static int N, col[], ans;
 	
-	public static boolean isAttackable(double r, double c, double qr, double qc) {
+	public static void main(String[] args) {
 		
-		double inclination = (qr - r) / (qc - c);
+		Scanner sc = new Scanner(System.in);
+		N = sc.nextInt();
 		
-		if(r==qr || c == qc || inclination == 1 || inclination == -1) {
-			return true;
-		}
-		return false;
+		col = new int[N+1]; // 1열부터 사용
+		ans = 0; // 가능한 경우의 수
+		
+		setQueen(1);
+		
+		System.out.println(ans);
+		
 	}
+
 	
-	
-	
-	public static void attack(int r, int c) {
-		for(int i=0; i<n; i++) {
-			for(int j=0; j<n; j++) {
-				if(map[i][j] == 0 && isAttackable(r, c, i, j)) {
-					map[i][j] = r+1;
-				}
-			}
-		}
-	}
-	
-	public static void nQueen(int depths) {
-		if(depths == n) {
-			cnt++;
+	// 해당 퀸을 현재 행에 가능한 모든 곳에 놓아보기
+	private static void setQueen(int row) {
+		
+		// 가지치기 : 직전까지 놓아진 상태로
+		if(!isAvailable(row-1)) return;
+		
+		// 기저 조건
+		if(row > N) {
+			ans++;
 			return;
 		}
 		
-		for(int i=0; i<n; i++) {
-			if(map[depths][i] == 0) {
-				attack(depths, i);
-				nQueen(depths+1);
-				reloadMap(depths, i);
-			}
+		
+		//유도 파트
+		for (int c = 1; c <= N; c++) {  // 1열부터 N열까지 시도
+			col[row] = c;
+			setQueen(row+1);
 		}
 
 	}
 	
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
-		map = new int[n][n];
-		nQueen(0);
-		System.out.println(cnt);
- 	}
+	/**
+	 * 
+	 * @param row - 마지막으로 놓아진 퀸의 행
+	 * @return
+	 */
+	private static boolean isAvailable(int row) {
+		
+		for (int i = 1; i < row; i++) {
+			if(col[i] == col[row] || Math.abs((col[i] - col[row])) ==  row - i) {
+				return false;
+			}
+		}
+		return true;
+
+	}
 }
