@@ -1,0 +1,167 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class Main {
+
+	private static int N, M, R;
+	private static int[][] map, cmdArr;
+	
+	private static int rowSum(int[] arr) {
+		int sum = 0;
+		for(int i = 0; i< arr.length; i++) {
+			sum+= arr[i];
+		}
+		return sum;
+	}
+	
+	private static int[][] copyMap() {
+		int[][] copiedMap = new int[N+1][M+1];
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=M; j++) {
+				copiedMap[i][j] = map[i][j];
+			}
+		}
+
+		return copiedMap;
+	}
+	
+	private static void rotateClockWise(int sr, int sc, int er, int ec, int[][] copiedMap) {
+		int r = sr;
+		int c = sc;
+		
+		int temp = copiedMap[r][c];
+		
+		while(r+1 <= er) {
+			copiedMap[r][c] = copiedMap[r+1][c];
+			r++;
+		}
+		
+		while(c+1 <= ec) {
+			copiedMap[r][c] = copiedMap[r][c+1];
+			c++;
+		}
+		
+		while(r-1 >= sr) {
+			copiedMap[r][c] = copiedMap[r-1][c];
+			r--;
+		}
+		
+		while(c-1 >= sc) {
+			copiedMap[r][c] = copiedMap[r][c-1];
+			c--;
+		}
+		
+		copiedMap[r][c+1] = temp;
+		
+	}
+	
+	
+	private static void rcsOperate(int r, int c, int s, int[][] copiedMap) {
+		
+		
+		int sr = r-s;
+		int sc = c-s;
+		
+		int er = r+s;
+		int ec = c+s;
+		
+		while(sr<er) {
+			
+			
+			rotateClockWise(sr, sc, er, ec, copiedMap);
+			
+			sr++;
+			sc++;
+			
+			er--;
+			ec--;
+			
+		}
+	} 
+	
+	public static void main(String[] args) throws IOException {
+		
+		int ans = Integer.MAX_VALUE;
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		R = Integer.parseInt(st.nextToken());
+		map = new int[N+1][M+1];
+		for(int i=1; i<=N; i++) {
+			st = new StringTokenizer(br.readLine()); 
+			for(int j=1; j<=M; j++) { 
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		
+		cmdArr = new int[R][3];
+		int[] permArr = new int[R];
+		for(int i=0; i<R; i++) {
+			st = new StringTokenizer(br.readLine()); 
+			for(int j=0; j<3; j++) { 
+				cmdArr[i][j] = Integer.parseInt(st.nextToken());
+			}
+			
+			permArr[i] = i;
+		}
+		
+		do {
+			
+			int[][] copiedMap = copyMap();
+			
+			for(int order : permArr) {
+				int r = cmdArr[order][0];
+				int c = cmdArr[order][1];
+				int s = cmdArr[order][2];
+				
+				rcsOperate(r, c, s, copiedMap);
+				
+			}
+			
+			for(int i=1; i<=N; i++) {
+				ans = Math.min(ans, rowSum(copiedMap[i]));
+			}
+			
+			
+		} while(np(permArr));
+		
+		System.out.println(ans);
+		
+	}
+	
+	private static boolean np(int[] arr) {
+		
+		int i = R - 1;
+		
+		while(i>0 && arr[i-1] >= arr[i]) i--;
+		
+		if(i==0) return false;
+		
+		int j = R - 1;
+		
+		while(arr[i-1] >= arr[j]) j--;
+		
+		swap(arr, i-1, j); 
+		
+		int k = R - 1;
+		while(i < k) {
+			swap(arr, i++, k--);
+		}
+		
+		return true;
+	}
+	
+	private static void swap(int[] arr, int a, int b) {
+		
+		int temp = arr[a];
+		arr[a] = arr[b];
+		arr[b] = temp;
+		
+	}
+}
