@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	private static int R, C, ans, ansLimit;
+	private static int R, C, ans;
 	private static boolean map[][];
 	private static int deltas[][] = {{-1, 1}, {0, 1}, {1, 1}};
 	
@@ -17,11 +17,7 @@ public class Main {
 		
 		if(c == C-1) {
 			ans++;
-			if(ans == ansLimit) {
-				System.out.println(ans);
-				System.exit(0);
-			}
-			map[r][c] = false;
+			map[r][c] = false; // 파이프를 설치했으므로 false
 			return false;
 		}
 		
@@ -31,16 +27,21 @@ public class Main {
 			int nr = r + d[0];
 			int nc = c + d[1];
 			if(isInRange(nr, nc) && map[nr][nc] && map[r][c]) {
+				
 				NoAvailableRoute = false;
-				map[r][c] = findRoot(nr, nc);
+				map[r][c] = findRoot(nr, nc); // true가 리턴됐다면 이번 delta로 정한 다음 길은 사용 불가 && false가 리턴됐다면 파이프 설치 완료
+				
 			}
 		}
 		
-		if(NoAvailableRoute) {
+		if(NoAvailableRoute || map[r][c] == true) {
+			// 아무 길도 가지 못했다면 이 길 폐쇄 - 다시 오지 않기 위함
 			map[r][c] = false;
 			return true;
 		} else {
-			return map[r][c];
+		
+			return false;
+			
 		}
 		
 	}
@@ -57,23 +58,11 @@ public class Main {
 			char[] temp = br.readLine().toCharArray();
 			for(int j=0; j<C; j++) {
 				if(temp[j] == '.') {
-					map[i][j] = true;
+					map[i][j] = true; // 이 길로 갈 수 있음
 				} else {
-					map[i][j] = false;
+					map[i][j] = false; // 이 길로 갈 수 없음
 				}
 			}
-			
-		}
-		
-		ansLimit = 10000;
-		for(int i=0; i<C; i++) {
-			int cnt = 0;
-			for(int j=0; j<R; j++) {
-				if(map[j][i]) {
-					cnt++;
-				}
-			}
-			ansLimit = Math.min(ansLimit, cnt);
 			
 		}
 		
