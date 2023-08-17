@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
-
 public class Main {
 	private static int R, C, ans;
 	private static boolean map[][];
@@ -21,28 +20,23 @@ public class Main {
 			return false;
 		}
 		
-		boolean NoAvailableRoute = true;
-		
 		for(int[] d : deltas) {	
 			int nr = r + d[0];
 			int nc = c + d[1];
 			if(isInRange(nr, nc) && map[nr][nc] && map[r][c]) {
 				
-				NoAvailableRoute = false;
 				map[r][c] = findRoot(nr, nc); // true가 리턴됐다면 이번 delta로 정한 다음 길은 사용 불가 && false가 리턴됐다면 파이프 설치 완료
 				
 			}
 		}
 		
-		if(NoAvailableRoute || map[r][c] == true) {
+		if(map[r][c]) {
 			// 아무 길도 가지 못했다면 이 길 폐쇄 - 다시 오지 않기 위함
 			map[r][c] = false;
 			return true;
-		} else {
-		
-			return false;
-			
 		}
+		
+		return false;
 		
 	}
 	
