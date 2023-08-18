@@ -2,23 +2,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 	private static int N, M, V;
 	private static boolean[] visited;
-	private static boolean[][] adjMatrix;
+	private static List<Integer>[] adjList;
 	private static StringBuilder sb;
 	
 	private static void dfs(int start) {
 		sb.append(start).append(' ');
 		visited[start] = true;
-		for(int i=1; i<=N; i++) {
-			if(adjMatrix[start][i] && !visited[i]) {
-				visited[i] = true;
-				dfs(i);
+		for(int i=0; i<adjList[start].size(); i++) {
+			int node = adjList[start].get(i);
+			if(node > 0 && !visited[node]) {
+				visited[node] = true;
+				dfs(node);
 			}
 		}
 		return;
@@ -34,10 +38,11 @@ public class Main {
 			int head = bfsQueue.poll();
 			sb.append(head).append(' ');
 			visited[head] = true;
-			for(int i = 1; i <= N; i++) {
-				if(adjMatrix[head][i] && !visited[i]) {
-					bfsQueue.add(i);
-					visited[i] = true;
+			for(int i = 0; i < adjList[head].size(); i++) {
+				int node = adjList[head].get(i);
+				if(node > 0 && !visited[node]) {
+					bfsQueue.add(node);
+					visited[node] = true;
 				}
 			}
 		}
@@ -59,17 +64,25 @@ public class Main {
 		// 방문배열 생성
 		visited = new boolean[N+1];
 		
-		// 인접행렬 생성
-		adjMatrix = new boolean[N+1][N+1];
+		// 인접리스트 생성
+		adjList = new ArrayList[N+1];
 		
+		for (int i = 1; i <= N; i++) {
+            adjList[i] = new ArrayList<Integer>();
+        }
+
 		// 간선 정보 갱신
 		for(int i=0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int A = Integer.parseInt(st.nextToken());
 			int B = Integer.parseInt(st.nextToken());
-			adjMatrix[A][B] = true;
-			adjMatrix[B][A] = true;
+			adjList[A].add(B);
+			adjList[B].add(A);
 		}
+		
+		for (int i = 1; i <= N; i++) {
+            Collections.sort(adjList[i]);;
+        }
 		
 		dfs(V);
 		sb.append('\n');
