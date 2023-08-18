@@ -1,34 +1,42 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-
-
 public class Main {
 
 	private static int N, M, R;
 	private static int[][] map, cmdArr;
 	
+	//행 합 계산
 	private static int rowSum(int[] arr) {
 		int sum = 0;
+		
 		for(int i = 0; i< arr.length; i++) {
 			sum+= arr[i];
 		}
+		
 		return sum;
+		
 	}
 	
+	
+	// 맵 복사
 	private static int[][] copyMap() {
+		
 		int[][] copiedMap = new int[N+1][M+1];
 		for(int i=1; i<=N; i++) {
-			for(int j=1; j<=M; j++) {
-				copiedMap[i][j] = map[i][j];
-			}
+			copiedMap[i] = Arrays.copyOf(map[i], M+1);
 		}
 
 		return copiedMap;
+		
 	}
 	
+	
+	// 시계방향 회전
 	private static void rotateClockWise(int sr, int sc, int er, int ec, int[][] copiedMap) {
+		
 		int r = sr;
 		int c = sc;
 		
@@ -59,8 +67,8 @@ public class Main {
 	}
 	
 	
+	// r, c, s 값을 계산 후 연산 시작
 	private static void rcsOperate(int r, int c, int s, int[][] copiedMap) {
-		
 		
 		int sr = r-s;
 		int sc = c-s;
@@ -68,18 +76,8 @@ public class Main {
 		int er = r+s;
 		int ec = c+s;
 		
-		while(sr<er) {
-			
-			
-			rotateClockWise(sr, sc, er, ec, copiedMap);
-			
-			sr++;
-			sc++;
-			
-			er--;
-			ec--;
-			
-		}
+		while(sr<er) rotateClockWise(sr++, sc++, er--, ec--, copiedMap);
+		
 	} 
 	
 	public static void main(String[] args) throws IOException {
@@ -92,6 +90,8 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		R = Integer.parseInt(st.nextToken());
+		
+		// 배열 입출력
 		map = new int[N+1][M+1];
 		for(int i=1; i<=N; i++) {
 			st = new StringTokenizer(br.readLine()); 
@@ -99,9 +99,13 @@ public class Main {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
+
 		cmdArr = new int[R][3];
+		
+		//넥퍼를 위한 순열조합  
 		int[] permArr = new int[R];
+
+		
 		for(int i=0; i<R; i++) {
 			st = new StringTokenizer(br.readLine()); 
 			for(int j=0; j<3; j++) { 
@@ -135,6 +139,7 @@ public class Main {
 		
 	}
 	
+	// 넥퍼 구현
 	private static boolean np(int[] arr) {
 		
 		int i = R - 1;
@@ -155,6 +160,7 @@ public class Main {
 		}
 		
 		return true;
+		
 	}
 	
 	private static void swap(int[] arr, int a, int b) {
@@ -164,4 +170,5 @@ public class Main {
 		arr[b] = temp;
 		
 	}
+	
 }
