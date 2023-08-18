@@ -1,81 +1,86 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.Stack;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Queue;
-import java.util.LinkedList;
+import java.util.StringTokenizer;
+
 public class Main {
-	static int n, m, s;
-	static boolean[] visitedDfs;
-	static boolean[][] pointArr;
-	static StringBuilder sb;
+	private static int N, M, V;
+	private static boolean[] visited;
+	private static boolean[][] adjMatrix;
+	private static StringBuilder sb;
 	
-	public static void dfs(int s) {
-		for(int i=1; i<n+1; i++) {
-			if(pointArr[s][i] && !visitedDfs[i]) {
-				visitedDfs[i] = true;
-				sb.append(i).append(" ");
+	private static void dfs(int start) {
+		sb.append(start).append(' ');
+		visited[start] = true;
+		for(int i=1; i<=N; i++) {
+			if(adjMatrix[start][i] && !visited[i]) {
+				visited[i] = true;
 				dfs(i);
 			}
 		}
+		return;
 	}
 	
-	
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
-        n = Integer.parseInt(input[0]);
-        m = Integer.parseInt(input[1]);
-        s = Integer.parseInt(input[2]);
+	private static void bfs(int start) {
 
-        pointArr = new boolean[n+1][n+1];
-        for(int i = 0; i< m; i++){
-            input = br.readLine().split(" ");
-            int A = Integer.parseInt(input[0]);
-            int B = Integer.parseInt(input[1]);
-            pointArr[A][B] = true;
-            pointArr[B][A] = true;
-        }
-        
-        // DFS - recursion
-        
-        sb = new StringBuilder();
-        visitedDfs = new boolean[n+1];
-        sb.append(s).append(" ");
-        visitedDfs[s] = true;
-        dfs(s);
-        
-        
-        
-        // BFS - Queue
-        StringBuilder bfs = new StringBuilder();
-        boolean[] visitedBfs = new boolean[n+1];
-        Queue<Integer> queue = new LinkedList<>();
-        bfs.append(s);
-        visitedBfs[s] = true;
-        
-        // Queue add
-        for(int i=1; i<=n; i++){
-        	if(pointArr[s][i]){
-        		queue.offer(i);
-        	}
-        }
-        
-        // BFS
-		while(!queue.isEmpty()){
-			int point = queue.poll();
-			if(!visitedBfs[point]){
-				bfs.append(" ").append(point);
-				visitedBfs[point] = true;
-			}
-			for(int i=1; i<n+1; i++){
-				if(pointArr[point][i] && !visitedBfs[i]){
-					queue.offer(i);
+		// Queue 생성
+		Queue<Integer> bfsQueue = new ArrayDeque<>();
+		bfsQueue.add(start);
+		
+		while(!bfsQueue.isEmpty()) {
+			int head = bfsQueue.poll();
+			sb.append(head).append(' ');
+			visited[head] = true;
+			for(int i = 1; i <= N; i++) {
+				if(adjMatrix[head][i] && !visited[i]) {
+					bfsQueue.add(i);
+					visited[i] = true;
 				}
 			}
 		}
 		
-        System.out.println(sb.toString());
-        System.out.println(bfs.toString());
-    }
+		return;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		sb = new StringBuilder();
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		V = Integer.parseInt(st.nextToken());
+		
+		// 방문배열 생성
+		visited = new boolean[N+1];
+		
+		// 인접행렬 생성
+		adjMatrix = new boolean[N+1][N+1];
+		
+		// 간선 정보 갱신
+		for(int i=0; i<M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int A = Integer.parseInt(st.nextToken());
+			int B = Integer.parseInt(st.nextToken());
+			adjMatrix[A][B] = true;
+			adjMatrix[B][A] = true;
+		}
+		
+		dfs(V);
+		sb.append('\n');
+		
+		// visited 초기화
+		Arrays.fill(visited, false);
+		
+		bfs(V);
+		
+		System.out.println(sb);
+		
+		
+	}
 }
