@@ -3,10 +3,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
+
 public class Main {
 
 	private static int N, M, R;
-	private static int[][] map, cmdArr;
+	private static int[][] map, cmdArr, copiedMap;
 	
 	//행 합 계산
 	private static int rowSum(int[] arr) {
@@ -24,9 +25,9 @@ public class Main {
 	// 맵 복사
 	private static int[][] copyMap() {
 		
-		int[][] copiedMap = new int[N+1][M+1];
 		for(int i=1; i<=N; i++) {
-			copiedMap[i] = Arrays.copyOf(map[i], M+1);
+//			copiedMap[i] = Arrays.copyOf(map[i], M+1);
+			System.arraycopy(map[i], 1, copiedMap[i], 1, M);
 		}
 
 		return copiedMap;
@@ -93,6 +94,7 @@ public class Main {
 		
 		// 배열 입출력
 		map = new int[N+1][M+1];
+		copiedMap = new int[N+1][M+1];
 		for(int i=1; i<=N; i++) {
 			st = new StringTokenizer(br.readLine()); 
 			for(int j=1; j<=M; j++) { 
