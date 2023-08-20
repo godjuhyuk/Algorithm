@@ -1,58 +1,63 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
 public class Main {
-    static int n, m, cnt;
-    static char[][] map;
-    static int[][] delta = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    static boolean[][] visited;
-    
-    public static boolean isOutOfRange( int r, int c) {
-        return r<0 || r>=n || c<0 || c>=m;
-    }
-    public static void addQueue(int r, int c, Queue<int[]> bfsQueue) {
-    	for(int d=0; d<delta.length; d++) {
-			int nr = r + delta[d][0];
-			int nc = c + delta[d][1];
-			if(isOutOfRange(nr, nc) || visited[nr][nc] || map[nr][nc] == '0') {
-				continue;
+	private static int N, M;
+	private static int map[][], deltas[][] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+	private static boolean visited[][];
+	private static void bfs() {
+		int ans = 0;
+		Queue<int[]> bfsQueue = new ArrayDeque<int[]>();
+		
+		bfsQueue.add(new int[] {1, 1});
+		
+		while(!bfsQueue.isEmpty()) {
+			ans++;
+			int qSize = bfsQueue.size();
+			for(int i=0; i<qSize; i++) {
+				int[] temp = bfsQueue.poll();
+				int r = temp[0];
+				int c = temp[1];
+				
+				visited[r][c] = true;
+				
+				for(int[] d : deltas) {
+					int nr = r + d[0];
+					int nc = c + d[1];
+					
+					if(!visited[nr][nc] && map[nr][nc] == 1) {
+						
+						if(nr == N && nc == M) {
+							System.out.println(ans+1);
+							return;
+						}
+						
+						bfsQueue.add(new int[] {nr, nc});
+						visited[nr][nc] = true;
+					}
+				}
 			}
-			visited[nr][nc] = true;
-			bfsQueue.add(new int[]{nr, nc});
 		}
 	}
-    
-    public static void bfs(int a, int b) {
-    	Queue<int[]> bfsQueue = new LinkedList();
-    	bfsQueue.add(new int[] {a, b});
-    	visited[a][b] = true;
-    	cnt = 1;
-    	while(!bfsQueue.isEmpty()) {
-    		
-    		int qSize = bfsQueue.size();
-    		for(int i=0; i<qSize; i++) {
-    	   		int[] temp = bfsQueue.poll();
-        		int r = temp[0];
-        		int c = temp[1];
-        		if(r==n-1&& c== m-1) {
-        			System.out.println(cnt);
-        			return;
-        		}
-        		addQueue(r, c, bfsQueue);
-    		}
-    		cnt++;
-    	}
-
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		
+		map = new int[N+2][M+2];
+		visited = new boolean[N+2][M+2];
+		for(int i=1; i<=N; i++) {
+			char[] input = br.readLine().toCharArray();
+			for(int j=1; j<=M; j++) {
+				map[i][j] = input[j-1] - '0';
+			}
+		}
+		bfs();
 	}
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] input = br.readLine().split(" ");
-        n = Integer.parseInt(input[0]);
-        m = Integer.parseInt(input[1]);
-        map = new char[n][m];
-        visited = new boolean[n][m];
-        for ( int i = 0; i < n; i++) {
-        	map[i] = br.readLine().toCharArray();
-        }
-        bfs(0, 0);
-    }
 }
