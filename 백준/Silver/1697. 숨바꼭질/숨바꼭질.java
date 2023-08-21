@@ -1,48 +1,55 @@
-import java.util.*;
-import java.io.*;
-public class Main {
-	static int n, k;
-	public static void bfs() {
-		Queue<Integer> bfsQueue = new LinkedList();
-		bfsQueue.add(n);
-		boolean[] visited = new boolean[100001];
-		int ans = 1;
-        visited[n] = true;
-		while(!bfsQueue.isEmpty()) {
-			int qSize = bfsQueue.size();
-			for(int i=0; i<qSize; i++) {
-				int now = bfsQueue.poll();
-				if(now*2 == k || now+1 == k || now-1 == k) {
-					System.out.println(ans);
-					return;
-				}
-				if(now*2 <= 100000 && !visited[now*2]) {
-					visited[now*2] = true;
-					bfsQueue.add(now*2);
-				}
-				if(now+1 <= 100000 && !visited[now+1]) {
-					visited[now+1] = true;
-					bfsQueue.add(now+1);
-				}
-				if(now-1 >= 0 && !visited[now-1]) {
-					visited[now-1] = true;
-					bfsQueue.add(now-1);
-				}
-			}
-            ans++;
-			
-		}
-	}
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		k = sc.nextInt();
-		if(n>=k) {
-			System.out.println(n-k);
-		} else {
-			bfs();
-		}
-	}
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.Scanner;
 
+public class Main {
+
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int N = sc.nextInt();
+        int K = sc.nextInt();
+        if(N==K) {
+            System.out.println(0);
+            return;
+        }
+
+        boolean[] visited = new boolean[100001];
+
+        Queue<Integer> queue = new ArrayDeque<Integer>();
+
+        queue.add(N);
+
+        int ans = 0;
+
+        while(!queue.isEmpty()) {
+            ans++;
+            int qSize = queue.size();
+
+            for(int i=0; i<qSize; i++) {
+                int temp = queue.poll(); 
+                if(temp-1 == K || temp+1 == K || temp*2 == K) {
+                    System.out.println(ans);
+                    return;
+                }
+
+
+
+                if(temp-1 >= 0 && !visited[temp-1]) {
+                    queue.add(temp-1);
+                    visited[temp-1] = true;
+                }
+                if(temp + 1 <= 100000 && !visited[temp+1]) {
+                    queue.add(temp+1);
+                    visited[temp+1] = true;
+                }
+                if(temp*2 <= 100000 && !visited[temp*2]) {
+                    queue.add(temp*2);
+                    visited[temp*2] = true;
+                }
+            }
+        }
+    }
 }
