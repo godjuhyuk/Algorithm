@@ -62,6 +62,7 @@ public class Main {
 		int hitOrder = 0;
 		// N개 이닝동안 게임 진행
 		for(int i=0; i<N; i++) {
+			
 			int outCount = 0;
 			// 뒤에서부터 홈, 1루, 2루, 3루
 			int baseStatus = 0b0000;
@@ -77,11 +78,13 @@ public class Main {
 					// 주자 진루
 					for(int k=3; k>=1; k--) {
 						// k번째 루에 주자 있을때 && 홈으로 들어가는 경우
-						if((baseStatus & 1 << k) > 0 && k + swing > 3) {
+						if((baseStatus & 1 << k) == 0) continue;
+						
+						if(k + swing > 3) {
 							totalScore++;
 							baseStatus -= 1 << k;
 						}
-						else if((baseStatus & 1 << k) > 0) {
+						else{
 							// 진루
 							baseStatus |= 1 << (k + swing);
 							
