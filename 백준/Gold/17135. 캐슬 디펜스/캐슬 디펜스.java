@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-
 public class Main {
 	
-	private static int N, M, D, ans;
+	private static int N, M, D, ans, enemyCnt;
 	private static int[] archerLocList;
 	private static int[][] deltas = {{0, -1}, {-1, 0}, {0, 1}};
 	private static Archer[] archers;
@@ -30,7 +29,6 @@ public class Main {
 		
 		int row;
 		int col;
-		int shootRange = D;
 		
 		public Archer(int col) {
 			row = N;
@@ -41,7 +39,12 @@ public class Main {
 		private void shoot(int[][] copiedMap, boolean[][] visited) {
 			
 			Queue<int[]> findQueue = new ArrayDeque<int[]>();
-			findQueue.add(new int[] {this.row, this.col});
+            if(copiedMap[this.row-1][this.col] > 0) {
+                targetList.add(new int[] {this.row-1, this.col});
+                return;
+            }
+            
+			findQueue.add(new int[] {this.row-1, this.col});
 			
 			// BFS 시작
 			while(!findQueue.isEmpty()) {
@@ -86,6 +89,7 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0; j<M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				if(map[i][j] == 1) enemyCnt++;
 			}
 		}
 		
@@ -116,7 +120,6 @@ public class Main {
 		
 		int killPoint = 0;
 		int[][] copiedMap = copyMap();
-		int phase = 1;
 		
 		game : while(true) {
 			
@@ -149,7 +152,6 @@ public class Main {
 				for(int j=0; j<M; j++) {
 					// 적이 생존해있다면 game 진행
 					if(copiedMap[i][j] != 0) {
-						phase++;
 						continue game;
 					}
 				}
@@ -159,6 +161,10 @@ public class Main {
 			break game;
 		}
 		ans = Math.max(ans, killPoint);
+		if(ans == enemyCnt) {
+			System.out.println(ans);
+			System.exit(0);
+		}
 		
 	}
 	
