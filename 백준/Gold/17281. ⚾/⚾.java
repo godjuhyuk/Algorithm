@@ -39,30 +39,15 @@ import java.util.StringTokenizer;
  */
 public class Main {
 	private static int N, ans;
-	private static Player[] players;
-	
-	public static class Player {
-		
-		int playerNum;
-		// 각 이닝당 퍼포먼스 배열
-		int[] performance = new int[N];
-		
-		public Player(int num) {
-			this.playerNum = num;
-		}
-		
-	}
+	private static int[][] players;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		
-		players = new Player[9];
+		players = new int[9][N];
 		// 1번타자는 고정이므로
 		int[] playersFactorialArr = new int[8];
-		for(int i=0; i<9; i++) {
-			players[i] = new Player(i);
-		};
 		
 		for(int i=0; i<8; i++) {
 			playersFactorialArr[i] = i+1;
@@ -71,7 +56,7 @@ public class Main {
 		for(int i=0; i<N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for(int j=0; j<9; j++) {
-				players[j].performance[i] = Integer.parseInt(st.nextToken()); 
+				players[j][i] = Integer.parseInt(st.nextToken()); 
 			}
 		}
 		
@@ -97,7 +82,7 @@ public class Main {
 			while(outCount < 3) {
 				
 				// swing : 현재 타자의 i번쨰 이닝 퍼포먼스
-				int swing = getNowPlayer(startLineUp, hitOrder).performance[i];
+				int swing = getNowPlayerPerform(i, startLineUp, hitOrder);
 				
 				if(swing == 0) {
 					outCount++;
@@ -131,17 +116,17 @@ public class Main {
 		ans = Math.max(totalScore, ans);
 	}
 	
-	private static Player getNowPlayer(int[] startLineUp, int nowPlayerOrder) {
+	private static int getNowPlayerPerform(int inning, int[] startLineUp, int nowPlayerOrder) {
 		
 		// startLineUp엔 1번 선수가 없는 상태이므로
 		// 4번타자일때는 무조건 1번 선수를 리턴 
 		if(nowPlayerOrder < 3) {
-			return players[startLineUp[nowPlayerOrder]];
+			return players[startLineUp[nowPlayerOrder]][inning];
 		}
 		else if(nowPlayerOrder == 3) {
-			return players[0];
+			return players[0][inning];
 		} else {
-			return players[startLineUp[nowPlayerOrder-1]];
+			return players[startLineUp[nowPlayerOrder-1]][inning];
 		}
 
 	}
