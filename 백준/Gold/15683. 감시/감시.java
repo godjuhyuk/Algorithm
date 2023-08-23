@@ -2,13 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
 	
-	private static int N, M, ans, blockCount;
+	private static int N, M, ans;
 	private static int[][] map, deltas = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 	private static List<CCTV> cctvList;
 	private static CCTV[] cctvFactorialList;
@@ -106,7 +105,6 @@ public class Main {
 				else if(map[i][j] < 6){
 					cctvList.add(new CCTV(i, j, map[i][j]));
 				}
-				else blockCount++;
 			}
 		}
 		cctvFactorialList = new CCTV[cctvList.size()];
@@ -147,12 +145,13 @@ public class Main {
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
 				if(map[i][j] == -1) {
-					cnt++;
+					
 					map[i][j] = 0;
 				}
+                else if(map[i][j] == 0) cnt++;
 			}
 		}
-		return N*M - cnt - cctvList.size() - blockCount;
+		return cnt;
 	}
 	
 }
