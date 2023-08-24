@@ -11,7 +11,7 @@ public class Main {
 	private static int N, ans;
 	private static int[] peopleNum, sumArr;
 	private static boolean gameOver;
-	private static boolean[] isSelected, visited, boolArr;
+	private static boolean[] isSelected, visited;
 	private static boolean[][] adjMatrix;
 	
 	
@@ -20,8 +20,10 @@ public class Main {
 		
 		int cnt = 0;
 		Queue<Integer> q = new ArrayDeque<Integer>();
+		
 		q.add(area[0]);
 		visited[area[0]] = true;
+		
 		while(!q.isEmpty()) {
 			
 			int from = q.poll();
@@ -41,6 +43,7 @@ public class Main {
 		
 		return false;
 		
+		
 	}
 	
 	private static void solve(int firstAreaCnt) {
@@ -48,8 +51,6 @@ public class Main {
 		int[] secondArea = new int[N-firstAreaCnt];
 		sumArr[0] = 0;
 		sumArr[1] = 0;
-		boolArr[0] = false;
-		boolArr[1] = false;
 		visited = new boolean[N+1];
 		
 		// 선택된 element 갱신
@@ -67,11 +68,6 @@ public class Main {
 			}
 		}
 		
-//		// boolArr[0] 갱신 : 첫번째 선거구가 모두 연결되어있는지 갱신
-//		connectCheck(firstArea, 0, 1);
-//			
-//		// boolArr[1] 갱신 : 두번째 선거구가 모두 연결되어있는지 갱신
-//		connectCheck(secondArea, 1, 1);
 
 		// 둘다 연결되어있다면
 		if(connectCheck(firstArea, 0, 1) && connectCheck(secondArea, 1, 1)) {
@@ -110,10 +106,17 @@ public class Main {
 		
 		ans = Integer.MAX_VALUE;
 		N = Integer.parseInt(br.readLine());
+		
+		// 각 선거구의 총합 배열
 		sumArr = new int[2];
-		boolArr = new boolean[2];
+		
+		// 인구수 배열
 		peopleNum = new int[N+1];
+		
+		// 부분집합을 위한 boolean 배열
 		isSelected = new boolean[N+1];
+		
+		// 인접행렬
 		adjMatrix = new boolean[N+1][N+1];
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
