@@ -10,34 +10,30 @@ public class Main {
 	
 	private static void func(String cmd, String[] input) throws IOException {
 		
-		switch (cmd) {
-		case "add":
-			int x = Integer.parseInt(input[1]);
+		if(cmd.equals("add")){
+            int x = Integer.parseInt(input[1]);
 			if((S & 1 << x) == 0) S |= 1 << x;
-			break;
-		case "check":
-			x = Integer.parseInt(input[1]);
+        }
+        else if(cmd.equals("check")){
+            int x = Integer.parseInt(input[1]);
 			if((S & 1 << x) > 0) bw.write(1 + "\n");
 			else bw.write(0 + "\n");
-			break;
-		case "remove":
-			
-			x = Integer.parseInt(input[1]);
+        }
+        else if(cmd.equals("remove")){
+            int x = Integer.parseInt(input[1]);
 			if((S & 1 << x) > 0) S -= 1 << x;
-			break;
-		case "toggle":
-			x = Integer.parseInt(input[1]);
+        }
+        else if(cmd.equals("toggle")){
+            int x = Integer.parseInt(input[1]);
 			if((S & 1 << x) > 0) S -= 1 << x;
 			else S |= 1 << x;
-			
-			break;
-		case "empty":
-			S = 0;
-			break;
-		case "all":
-			S = (int)Math.pow(2, 21) - 1;
-			break;
-		}
+        }
+        else if(cmd.equals("empty")){
+           S = 0;
+        } 
+        else {
+            S = (int)Math.pow(2, 21) - 1;
+        }
 
 	}
     
