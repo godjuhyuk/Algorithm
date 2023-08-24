@@ -16,7 +16,7 @@ public class Main {
 	
 	
 	// bfs로 해야함
-	private static void connectCheck(int[] area, int idx, int depths) {
+	private static boolean connectCheck(int[] area, int idx, int depths) {
 		
 		int cnt = 0;
 		Queue<Integer> q = new ArrayDeque<Integer>();
@@ -27,8 +27,7 @@ public class Main {
 			int from = q.poll();
 			
 			if(++cnt == area.length) {
-				boolArr[idx] = true;
-				return;
+				return true;
 			}
 			
 			for(int to : area) {
@@ -40,6 +39,7 @@ public class Main {
 				
 		}
 		
+		return false;
 		
 	}
 	
@@ -56,18 +56,25 @@ public class Main {
 		for(int i=1, a = 0, b = 0; i<=N; i++) {
 			if(isSelected[i]) {
 				firstArea[a++] = i;
+				
+				// 첫번째 선거구 인구 수 총합
 				sumArr[0] += peopleNum[i];
 			} else {
 				secondArea[b++] = i;
+				
+				// 두번째 선거구 인구수 총합 
 				sumArr[1] += peopleNum[i];
 			}
 		}
-		connectCheck(firstArea, 0, 1);
-			
-		// boolArr[1] 갱신
-		connectCheck(secondArea, 1, 1);
+		
+//		// boolArr[0] 갱신 : 첫번째 선거구가 모두 연결되어있는지 갱신
+//		connectCheck(firstArea, 0, 1);
+//			
+//		// boolArr[1] 갱신 : 두번째 선거구가 모두 연결되어있는지 갱신
+//		connectCheck(secondArea, 1, 1);
 
-		if(boolArr[0] && boolArr[1]) {
+		// 둘다 연결되어있다면
+		if(connectCheck(firstArea, 0, 1) && connectCheck(secondArea, 1, 1)) {
 			ans = Math.min(ans, Math.abs(sumArr[0] - sumArr[1]));
 			if(ans == 0) {
 				gameOver = true;
