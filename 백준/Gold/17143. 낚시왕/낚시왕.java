@@ -59,23 +59,28 @@ public class Main {
 			case 1:
 				this.dx = -1;
 				this.dy = 0;
+				this.speed %= (R-1)*2;
 				break;
 			case 2:
 				this.dx = 1;
 				this.dy = 0;
+				this.speed %= (R-1)*2;
 				break;
 			case 3:
 				this.dx = 0;
 				this.dy = 1;
+				this.speed %= (C-1)*2;
 				break;
 			case 4:
 				this.dx = 0;
 				this.dy = -1;
+				this.speed %= (C-1)*2;
 				break;
 			}
 
 		}
 		
+		// 이동을 완료한 상어끼리 만났을 경우, 무게가 큰 상어가 이긴다.
 		private void isAbleToEat(Shark o, int otherIdx, int myIdx) {
 			if(this.weight > o.weight) {
 				o.isAlive = false;
@@ -98,6 +103,7 @@ public class Main {
 
 	}
 	
+	// 상어 이동
 	private static void move(int sharkIdx) {
 		int r = sharks[sharkIdx].row;
 		int c = sharks[sharkIdx].col;
@@ -123,22 +129,32 @@ public class Main {
 		sharks[sharkIdx].dy = dy;
 		
 		if(map[r][c] != 0 &&  map[r][c] < sharkIdx) {
+
+		// 내가 도착한 곳에 다른 상어가 이미 존재 && 이미 존재했던 상어가 이동을 완료한 상어일 때
 			sharks[sharkIdx].isAbleToEat(sharks[map[r][c]], map[r][c], sharkIdx);
+
 		} else {
-			// 여기서 만약 움직이지 않은 상어가 있으면 나중에 0으로 만들어버리는듯? 
+
 			map[r][c] = sharkIdx;
 		}
 		
 		
 	}
 	
+
 	private static void sharkMove() {
 		for(int i=1; i<=M; i++) {
 			if(sharks[i].isAlive && map[sharks[i].row][sharks[i].col] == i) {
+
+				// 살아있는 상어일 때 && 이동 전에 다른 상어가 도착하지않았다면 맵을 0으로 만들고 떠난다.
 				map[sharks[i].row][sharks[i].col] = 0;
 				move(i);
+
 			} else if(sharks[i].isAlive) {
+
+				// 살아있는 상어일 때 && 이동 전에 다른 상어가 도착했으므로 맵 값이 내 인덱스가 아니라면 그냥 떠난다.
 				move(i);
+
 			}
 		}
 	}
@@ -146,8 +162,12 @@ public class Main {
 	
 	private static void getShark(int col) {
 		
+		// 낚시 시작
+
 		for(int i=1; i<=R; i++) {
 			int sharkIdx = map[i][col];
+
+			// 상어를 발견하면 즉시 포획			
 			if(sharkIdx > 0 && sharks[sharkIdx].isAlive) {
 				sharks[sharkIdx].isAlive = false;
 				ans += sharks[sharkIdx].weight;
