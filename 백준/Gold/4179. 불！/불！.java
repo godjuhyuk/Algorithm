@@ -28,7 +28,7 @@ public class Main {
 			for(int j=0; j<C; j++) {
 				map[i][j] = input.charAt(j);
 				if(map[i][j] == 'J') {
-					jQueue.offer(new int[] {i, j, -1, -1});
+					jQueue.offer(new int[] {i, j});
 					visited[i][j] = true;
 				}
 				else if(map[i][j] == 'F') {
@@ -42,53 +42,16 @@ public class Main {
 		int[][] deltas = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
 		
 		while(!jQueue.isEmpty()) {
-			int qSize = jQueue.size();
-			for(int i=0; i<qSize; i++) {
-				int[] tempJ = jQueue.poll();
-				
-				int jr = tempJ[0];
-				int jc = tempJ[1];
-				
-				int pr = tempJ[2];
-				int pc = tempJ[3];
-				
-				
-				if(isOutOfRange(jr,jc) && map[pr][pc] != 'F') {
-					System.out.println(time);
-					return;
-				}
-				
-				if(isOutOfRange(jr, jc) || map[jr][jc] == 'F' || (pr!=-1 && pc!= -1  && map[pr][pc] == 'F')) continue;
-				map[jr][jc] = 'J';
-				
-				
-				for(int[] d: deltas) {
-					int nr = jr + d[0];
-					int nc = jc + d[1];
-					
-					if(isOutOfRange(nr, nc)) {
-						jQueue.offer(new int[] {nr, nc, jr, jc});
-						continue;
-					}
-					
-					if(map[nr][nc] != '.' || visited[nr][nc]) continue;
-					
-					visited[nr][nc] = true;
-					jQueue.offer(new int[] {nr, nc, jr, jc});
-					
-				}
-				
-			}
+			time++;
 			
- 			qSize = fireQueue.size();
+			int qSize = fireQueue.size();
+			
 			for(int i=0; i<qSize; i++) {
 				
 				int[] tempFire = fireQueue.poll();
 				
 				int tr = tempFire[0];
 				int tc = tempFire[1];
-				
-				map[tr][tc] = 'F';
 				
 				for(int[] d : deltas) {
 					int nr = tr + d[0];
@@ -97,6 +60,7 @@ public class Main {
 						continue;
 					}
 					
+					map[nr][nc] = 'F';
 					fireVisited[nr][nc] = true;
 					fireQueue.offer(new int[] {nr, nc});
 					
@@ -104,7 +68,31 @@ public class Main {
 				
 			}
 			
-			time++;
+			qSize = jQueue.size();
+			for(int i=0; i<qSize; i++) {
+				int[] tempJ = jQueue.poll();
+				
+				int jr = tempJ[0];
+				int jc = tempJ[1];
+				
+				for(int[] d: deltas) {
+					int nr = jr + d[0];
+					int nc = jc + d[1];
+					
+					if(isOutOfRange(nr, nc)) {
+						System.out.println(time);
+						return;
+					}
+					
+					if(map[nr][nc] != '.' || visited[nr][nc]) continue;
+					
+					visited[nr][nc] = true;
+					jQueue.offer(new int[] {nr, nc});
+					
+				}
+				
+			}
+			
 			
 		}
 		
