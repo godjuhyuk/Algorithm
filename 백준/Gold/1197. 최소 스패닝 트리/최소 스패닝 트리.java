@@ -1,45 +1,55 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * 간선 객체를 저장한 리스트를 만들고
+ * 오름 차순 정렬을 한다.
+ * 
+ * 가중치 크기가 제일 작은 간선 하나를 뽑아서 시작한다.
+ * 	=> 현재 내가 갈 수 있는 점중 가장 가중치가 적은 점을 간다.
+ * @author SSAFY
+ *
+ */
 public class Main {
+	static int[] parents;
 	
-	/**
-	 * PRIM 알고리즘은 정점을 중심으로 간선들을 봐가면서 체크한다.
-	 * 
-	 * 간선의 정보들을 인접 리스트로 담는다.
-	 * 
-	 * 시작점을 아무거나 큐에 담고 시작
-	 * 시작점부터 연결가능한 점들을 보면서 비용이 최소인 점으로 연결한다.
-	 * 
-	 * visited처리를 해준다.
-	 * 
-	 * 이제 다음 점을 꺼내고 visit 처리 및 다시 탐색
-	 * 
-	 * 
-	 * @param args
-	 */
-	
-	public static class Vertex implements Comparable<Vertex> {
+	static class Edge implements Comparable<Edge> {
 		
-		int no;
+		int from;
+		int to;
 		int weight;
 		
-		public Vertex(int no, int weight) {
-			this.no = no;
+		public Edge(int from, int to, int weight) {
+			this.from = from;
+			this.to = to;
 			this.weight = weight;
 		}
 		
-		@Override
-		public int compareTo(Vertex o) {
-			return Integer.compare(this.weight, o.weight);
-		}
+		public int compareTo(Edge o) {
+			
+			return this.weight - o.weight;
+		};
+		
+	}
+	
+	private static int find(int a) {
+
+		if(parents[a] == a) return a;
+		return parents[a] = find(parents[a]);
+	}
+	
+	private static boolean union(int a, int b) {
+		int aRoot = find(a);
+		int bRoot = find(b);
+		
+		if(aRoot == bRoot) return false;
+		
+		parents[bRoot] = aRoot;
+		return true;
 		
 	}
 	
@@ -50,47 +60,35 @@ public class Main {
 		
 		int V = Integer.parseInt(st.nextToken());
 		int E = Integer.parseInt(st.nextToken());
-
-		List<Vertex>[] adjList = new ArrayList[V+1];
 		
-		for(int i=1; i<=V; i++) adjList[i] = new ArrayList<Vertex>();
+		parents = new int[V+1];
+		for(int i=1; i<=V; i++) parents[i] = i;
+		
+		Edge[] edgeArr = new Edge[E];
 		
 		for(int i=0; i<E; i++) {
-			
 			st = new StringTokenizer(br.readLine());
 			
 			int from = Integer.parseInt(st.nextToken());
 			int to = Integer.parseInt(st.nextToken());
 			int weight = Integer.parseInt(st.nextToken());
 			
-			adjList[from].add(new Vertex(to, weight));
-			adjList[to].add(new Vertex(from, weight));
+			edgeArr[i] = new Edge(from, to, weight);
 			
 		}
 		
-		PriorityQueue<Vertex> priQueue = new PriorityQueue<Vertex>();
-		
-		boolean[] visited = new boolean[V+1];
-		
+		Arrays.sort(edgeArr);
+
 		int cnt = 0;
 		int sum = 0;
 		
-		Collections.sort(adjList[1]);
-		for(Vertex vertex : adjList[1]) {
-			visited[1] = true;
-            priQueue.add(vertex);
-		}
-		
-		while(!priQueue.isEmpty()) {
+		for(int i=0; i<E; i++) {
 			
-			Vertex vertex = priQueue.poll();
-			if(visited[vertex.no]) continue;
-			visited[vertex.no] = true;
-			sum += vertex.weight;
-			if(++cnt == V-1) break;
+			Edge temp = edgeArr[i];
 			
-			for(Vertex temp : adjList[vertex.no]) {
-				priQueue.add(temp);
+			if(union(temp.from, temp.to)) {
+				sum+= temp.weight;
+				if(++cnt == V-1) break;
 			}
 			
 		}
@@ -98,4 +96,6 @@ public class Main {
 		System.out.println(sum);
 		
 	}
+	
+
 }
