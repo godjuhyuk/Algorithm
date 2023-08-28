@@ -49,10 +49,6 @@ static int[] parents;
 			int V = Integer.parseInt(st.nextToken());
 			int E = Integer.parseInt(st.nextToken());
 			
-			parents = new int[V+1];
-			for(int i=1; i<=V; i++) parents[i] = i;
-			
-			Edge[] edgeArr = new Edge[E];
 			
 			for(int i=0; i<E; i++) {
 				st = new StringTokenizer(br.readLine());
@@ -60,23 +56,9 @@ static int[] parents;
 				int from = Integer.parseInt(st.nextToken());
 				int to = Integer.parseInt(st.nextToken());
 				
-				edgeArr[i] = new Edge(from, to);
-				
 			}
 			
-			int cnt = 0;
-			
-			for(int i=0; i<E; i++) {
-				
-				Edge temp = edgeArr[i];
-				
-				if(union(temp.from, temp.to)) {
-					if(++cnt == V-1) break;
-				}
-				
-			}
-			
-			System.out.println(cnt);
+			System.out.println(V-1);
 		}
 		
 		
