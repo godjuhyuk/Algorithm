@@ -1,4 +1,3 @@
-import java.awt.geom.Area;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,7 +35,7 @@ public class Main {
 
 		if(parents[a] == a) return a;
 		
-		return parents[a] = find(parents[a]);
+		return find(parents[a]);
 	}
 	
 	private static boolean union(int a, int b) {
