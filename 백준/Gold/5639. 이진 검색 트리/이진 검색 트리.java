@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Main {
+	static StringBuilder sb;	
 	static class Node {
 		int val;
 		Node left;
@@ -59,7 +60,7 @@ public class Main {
 				if(node.left != null) preorder(node.left);
 				if(node.right != null) preorder(node.right);
 				
-				System.out.println(node.val);
+				sb.append(node.val).append('\n');
 			}
 			
 		}
@@ -69,12 +70,12 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		BinarySearchTree bst = new BinarySearchTree();
-		
+		sb = new StringBuilder();		
 		Scanner sc = new Scanner(System.in);
 		while(sc.hasNextInt()) {
 			bst.add(sc.nextInt());
 		}
 		bst.preorder(bst.root);
-		
+		System.out.println(sb);
 	}
 }
