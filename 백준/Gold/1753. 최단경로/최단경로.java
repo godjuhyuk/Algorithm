@@ -86,8 +86,8 @@ public class Main {
 			visited[cur.no] = true;
 			
 			for(Vertex next : adjList[cur.no]) {
-				if(!visited[next.no] && distance[next.no] > cur.dist+next.dist){
-					distance[next.no] = cur.dist+next.dist;
+				if(!visited[next.no] && distance[next.no] > distance[cur.no]+next.dist){
+					distance[next.no] = distance[cur.no]+next.dist;
 					pq.offer(new Vertex(next.no, distance[next.no]));
 				}
 			}
