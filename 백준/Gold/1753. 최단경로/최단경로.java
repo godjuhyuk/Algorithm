@@ -42,6 +42,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
 		int V = Integer.parseInt(st.nextToken());
@@ -93,9 +94,11 @@ public class Main {
 		}
 		
 		for(int i=1; i<=V; i++) {
-			if(distance[i] != Integer.MAX_VALUE - 11) System.out.println(distance[i]);
-			else System.out.println("INF");
+			if(distance[i] != Integer.MAX_VALUE - 11) sb.append(distance[i]).append('\n');
+			else sb.append("INF").append('\n');
 		}
+		
+		System.out.println(sb);
 		
 	}
 
