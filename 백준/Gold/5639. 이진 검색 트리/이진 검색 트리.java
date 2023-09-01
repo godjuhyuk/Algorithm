@@ -71,9 +71,12 @@ public class Main {
 		
 		BinarySearchTree bst = new BinarySearchTree();
 		sb = new StringBuilder();		
-		Scanner sc = new Scanner(System.in);
-		while(sc.hasNextInt()) {
-			bst.add(sc.nextInt());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		while(true) {
+			String input = br.readLine();
+			if(input == null || input.isEmpty()) break;
+			bst.add(Integer.parseInt(input));
 		}
 		bst.preorder(bst.root);
 		System.out.println(sb);
