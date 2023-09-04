@@ -1,13 +1,16 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
 	static long[][] fibonacciCalcul;
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-		Scanner sc = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		long n = sc.nextLong();
+		
+		
+		long n = Long.parseLong(br.readLine());
 		
 		if(n == 1) {
 			System.out.println(1);
@@ -40,7 +43,7 @@ public class Main {
 	private static long[][] divideAndConquer(long k) {
 		
 		
-		if(k == 1) {
+		if(k <= 1) {
 			return fibonacciCalcul;
 		}
 		else if(k%2 == 0) {
@@ -55,10 +58,10 @@ public class Main {
 	
 	private static long[][] matrixMultiple(long[][] m1, long[][] m2) {
 		
-		long a = (m1[0][0]%1_000_000_007 * m2[0][0]%1_000_000_007 + m1[0][1]%1_000_000_007 * m2[1][0]%1_000_000_007)%1_000_000_007;
-		long b = (m1[0][0]%1_000_000_007 * m2[0][1]%1_000_000_007 + m1[0][1]%1_000_000_007 * m2[1][1]%1_000_000_007)%1_000_000_007;
-		long c = (m1[1][0]%1_000_000_007 * m2[0][0]%1_000_000_007 + m1[1][1]%1_000_000_007 * m2[1][0]%1_000_000_007)%1_000_000_007;
-		long d = (m1[1][0]%1_000_000_007 * m2[0][1]%1_000_000_007 + m1[1][1]%1_000_000_007 * m2[1][1]%1_000_000_007)%1_000_000_007;
+		long a = (m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0])%1_000_000_007;
+		long b = (m1[0][0] * m2[0][1] + m1[0][1] * m2[1][1])%1_000_000_007;
+		long c = (m1[1][0] * m2[0][0] + m1[1][1] * m2[1][0])%1_000_000_007;
+		long d = (m1[1][0] * m2[0][1] + m1[1][1] * m2[1][1])%1_000_000_007;
 		
 		return new long[][] {{a, b}, {c, d}};
 		
