@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -12,9 +13,6 @@ public class Main {
 		
 		public Value(String val) {
 			this.val = val;
-			if(val.equals("0")) {
-				zeroCnt++;
-			}
 		}
 		
 		@Override
@@ -46,19 +44,22 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 		int N = Integer.parseInt(br.readLine());
 		
-		PriorityQueue<Value> pq = new PriorityQueue<Value>();
+		Value[] arr = new Value[N];
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		for(int i=0; i<N; i++) pq.add(new Value(st.nextToken()));
+		for(int i=0; i<N; i++) arr[i] = new Value(st.nextToken());
 		
-		if(zeroCnt == N ) {
+		
+		Arrays.sort(arr);
+		
+		if(arr[0].val.equals("0")) {
 			System.out.println(0);
 			return;
 		}
 		
 		for(int i=0; i<N; i++) {
-			sb.append(pq.poll().val);
+			sb.append(arr[i].val);
 		}
 		
 		System.out.println(sb);
