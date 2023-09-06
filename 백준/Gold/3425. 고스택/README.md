@@ -31,7 +31,7 @@
 	<li><strong>MOD</strong>: 첫 번째 숫자로 두 번째 숫자를 나눈 나머지를 저장한다. 두 번째 숫자가 피제수, 첫 번째 숫자가 제수이다.</li>
 </ul>
 
-<p><img alt="" src="https://www.acmicpc.net/upload/images/stmc.png" style="height:100px; width:514px"></p>
+<p><img alt="" src="" style="height:100px; width:514px"></p>
 
 <p>이항 연산자의 경우에 첫 번째 숫자가 오른쪽에 있는 수이고, 두 번째 숫자가 왼쪽에 있는 수이다. 또, 연산을 수행하기 전에 두 숫자를 모두 스택에서 제거한 뒤, 결과를 다시 스택에 저장하는 것이다.</p>
 
