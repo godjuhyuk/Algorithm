@@ -51,7 +51,8 @@ import java.util.StringTokenizer;
  */
 public class Main {
 	private static int middleVal;
-	private static final int MAX_SIZE = 9999;
+	private static final int MAX_SIZE = 5000;
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -59,9 +60,10 @@ public class Main {
 		int T = Integer.parseInt(br.readLine());
 		
 		// 힙 초기화
-		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(MAX_SIZE, Collections.reverseOrder());
 		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(MAX_SIZE);
-		for(int t=0; t < T; t++) {
+		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(MAX_SIZE, Collections.reverseOrder());
+		
+		for(int t = 0; t < T; t++) {
 			
 			// 현재 테케에서의 Input 개수
 			int n = Integer.parseInt(br.readLine());
@@ -74,17 +76,18 @@ public class Main {
 				
 				StringTokenizer st = new StringTokenizer(br.readLine());
 				
-				// 마지막 for문일 경우 mod 10, 아니면 10
+				// 마지막 for문일 경우 n mod 10, 아니면 10
 				int inputSize = i == n/10 ? n%10 : 10; 
 				
 				for(int j=1; j<=inputSize; j++) {
 					
-					int a = Integer.parseInt(st.nextToken());
+					int input = Integer.parseInt(st.nextToken());
 					
 					// 항상 양쪽 힙의 사이즈는 1 차이 이내여야한다.
-					if(minHeap.size() != maxHeap.size()) maxHeap.offer(a);
-					else minHeap.offer(a);
+					if(minHeap.size() != maxHeap.size()) maxHeap.offer(input);
+					else minHeap.offer(input);
 					
+					// minHeap의 head가 항상 maxHeap의 head 보다 크거나 같아야한다.
 					if(maxHeap.size() > 0 && maxHeap.peek() > minHeap.peek()) {
 						
 						int temp = maxHeap.poll();
@@ -93,19 +96,19 @@ public class Main {
 						
 					}
 					
-					
 					middleVal = minHeap.peek();
 					if(j%2 == 1) bw.write(middleVal + " ");
 				}
 				
-				// 줄바꿈 
+				// 줄바꿈 - 10개를 출력한 후거나 전부 출력했다면 줄바꿈 
 				if( (inputSize==10 && i%2 == 1) || (inputSize + 10 * i) == n) bw.write('\n');
 				
-				
 			}
+			
+			// 다음 테케를 위해 힙 clear
 			maxHeap.clear();
 			minHeap.clear();
-			}
+		}
 		
 		bw.flush();
 		bw.close();
