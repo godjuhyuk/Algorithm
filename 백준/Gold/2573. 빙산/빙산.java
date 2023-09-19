@@ -121,7 +121,7 @@ public class Main {
 					 int nr = mt.r + d[0];
 					 int nc = mt.c + d[1];
 					 
-					 if(isOutOfRange(nr, nc) || map[nr][nc] > 0 || map[nr][nc] == MELTED) continue;
+					 if(map[nr][nc] > 0 || map[nr][nc] == MELTED) continue;
 					 mt.height--;
 				 }
 				 map[mt.r][mt.c] = mt.height > 0 ? mt.height : MELTED;
@@ -161,17 +161,11 @@ public class Main {
 			 int nr = r + d[0];
 			 int nc = c + d[1];
 			 
-			 if(isOutOfRange(nr, nc) || visited[nr][nc] || map[nr][nc] <= 0) continue;
+			 if(visited[nr][nc] || map[nr][nc] <= 0) continue;
 			 visited[nr][nc] = true;
 			 dfs(nr, nc);
 		 }
 
 	}
 	 
-	 private static boolean isOutOfRange(int r, int c) {
-		 
-		 return r<0 || r>=N || c<0 || c>=M;
-
-	}
-	
 }
