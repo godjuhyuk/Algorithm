@@ -12,7 +12,7 @@ public class Main {
 	private static int R, C, time, ansX, ansY;
 	private static int[][] deltas = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 	private static int[][] map;
-	private static boolean[][] visited; 
+	private static boolean[][] visited, swanVisited, iceVisited; 
 	private static List<Ice> iceList;
 	private static List<Swan> swanList;
 	private static Swan[] swanArr;
@@ -71,7 +71,8 @@ public class Main {
 		swanArr = new Swan[2];
 		iceList = new ArrayList<Ice>();
 		swanList = new ArrayList<Swan>(); 
-		
+		swanVisited = new boolean[R][C];
+		iceVisited = new boolean[R][C];
 		// 입출력
 		for(int i=0, swanIdx = 0; i<R; i++) {
 			String input = br.readLine();
@@ -126,8 +127,6 @@ public class Main {
 			}
 			
 			
-			boolean[][] iceVisited = new boolean[R][C];
-			
 			// 녹은 얼음 주변에 얼음 있으면 추가
 			for(Ice ice : iceList) {
 				
@@ -159,7 +158,6 @@ public class Main {
 		
 		List<Swan> secondSwanList = new ArrayList<Swan>();
 		
-		boolean[][] swanVisited = new boolean[R][C];
 		
 		for(Swan swan : swanList) {
 			Queue<int[]> q = new ArrayDeque<int[]>();
