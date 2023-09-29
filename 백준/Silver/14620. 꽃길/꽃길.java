@@ -37,7 +37,7 @@ import java.util.Comparator;
  *  	=> 최악의 경우 : 81*4 + 9^3 = 1000도 안됨? 해보자
  * 		=> 알고보니 isSafe의 계산횟수 고려안함
  * 		=> 81*4 + 9^3 * 4 = 암튼 1000쯤임
- *		=> 이게 아니네
+ *		=> 이것도 결국 조합으로 풀어야했음ㅠ
  */
 
 public class Main {
@@ -56,13 +56,8 @@ public class Main {
 		}
 		
 		public boolean isSafe(Flower f) {
-            
-            if(Math.abs(this.row-f.row) +Math.abs(this.col - f.col) >=3){
-                return true;
-            }
-            
 			int[][] tempMap = new int[n+1][n+1];
-            
+		
 			// 내 꽃술 & 꽃잎 위치를 전부 -1로 초기화
 			tempMap[this.row][this.col] = -1;
 			for(int[] d : deltas ) {
@@ -117,13 +112,13 @@ public class Main {
 			}
 		}
 		
-//		// 가격 오름차순 정렬
-//		Arrays.sort(flowers, new Comparator<Flower>() {
-//			@Override
-//			public int compare(Flower f1, Flower f2) {
-//				return f1.totalPrice - f2.totalPrice;
-//			}
-//		});
+		// 가격 오름차순 정렬
+		Arrays.sort(flowers, new Comparator<Flower>() {
+			@Override
+			public int compare(Flower f1, Flower f2) {
+				return f1.totalPrice - f2.totalPrice;
+			}
+		});
 		
 		int ans = Integer.MAX_VALUE;
 		
@@ -144,5 +139,4 @@ public class Main {
 		}
 		System.out.println(ans);
 	}
-	
 }
