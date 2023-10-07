@@ -59,7 +59,6 @@ import java.util.StringTokenizer;
  */
 public class Main {
 
-	private static int MELTED = -9999999;
 	private static int N, M, year, mountainCnt, tempCount;
 	private static int map[][], deltas[][] = new int[][] {{0, 1}, {1, 0},{0,-1},{-1, 0}};
 	private static boolean[][] visited;
@@ -69,6 +68,7 @@ public class Main {
 		int c;
 		int height;
 		public Mountain(int r, int c, int height) {
+			super();
 			this.r = r;
 			this.c = c;
 			this.height = height;
@@ -107,9 +107,8 @@ public class Main {
 	 private static void bfs(Queue<Mountain> mq) {
 		 while(!mq.isEmpty()) {
 			 year++;
-			 MELTED++;
 			 int qSize = mq.size();
-			 int[][] mapInfo = new int[qSize][3];
+			 List<int[]> mapInfo = new ArrayList();
 			 for(int i=0; i<qSize; i++) {
 				 
 				 Mountain mt = mq.poll();
@@ -121,26 +120,34 @@ public class Main {
 					 int nr = mt.r + d[0];
 					 int nc = mt.c + d[1];
 					 
-					 if(map[nr][nc] > 0 || map[nr][nc] == MELTED) continue;
+					 if(isOutOfRange(nr, nc) || map[nr][nc] > 0) continue;
 					 mt.height--;
 				 }
-				 map[mt.r][mt.c] = mt.height > 0 ? mt.height : MELTED;
+				 
 				 // 산 높이 갱신
+				 mapInfo.add(new int[] {mt.r, mt.c, mt.height});
 				 if(mt.height <= 0) mountainCnt--;
 				 else mq.offer(mt);
 				 
 			 }
 			 
+			 for(int[] mtInfo : mapInfo) {
+				 int r = mtInfo[0];
+				 int c = mtInfo[1];
+				 int h = mtInfo[2];
+				 
+				 map[r][c] = h;
+			 }
+			 
+//			 for(int i=0; i<N; i++) System.out.println(Arrays.toString(map[i]));
 			 // 다 녹았으면 dfs로 분리 여부 확인
 			 if(mq.size() == 0) {
 				 System.out.println(0);
 				 return;
 			 } else {
-				 
-				 
-				 tempCount = 0;
 				 Mountain tempMountain = mq.peek();
 				 visited = new boolean[N][M];
+				 tempCount = 0;
 				 visited[tempMountain.r][tempMountain.c] = true;
 				 dfs(tempMountain.r, tempMountain.c);
 				 if(tempCount < mountainCnt) {
@@ -161,11 +168,17 @@ public class Main {
 			 int nr = r + d[0];
 			 int nc = c + d[1];
 			 
-			 if(visited[nr][nc] || map[nr][nc] <= 0) continue;
+			 if(isOutOfRange(nr, nc) || visited[nr][nc] || map[nr][nc] <= 0) continue;
 			 visited[nr][nc] = true;
 			 dfs(nr, nc);
 		 }
 
 	}
 	 
+	 private static boolean isOutOfRange(int r, int c) {
+		 
+		 return r<0 || r>=N || c<0 || c>=M;
+
+	}
+	
 }
