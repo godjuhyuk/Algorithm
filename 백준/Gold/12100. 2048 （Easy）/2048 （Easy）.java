@@ -85,11 +85,13 @@ public class Main {
 			return;
 		}
 		
-		move(map, deltaIdx);
+        int[][] copiedMap = mapCopy(map);
+        
+		move(copiedMap, deltaIdx);
 		
 		// 유도파트
 		for(int i=0; i<4; i++) {
-			dfs(turn+1, max, i, mapCopy(map));
+			dfs(turn+1, max, i, copiedMap);
 		}
 		
 	}
