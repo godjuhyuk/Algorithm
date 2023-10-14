@@ -7,6 +7,8 @@ public class Main {
 	private static final int BOTTOM = 3, UP = 6;
 	private static int N, M, R, C, K;
 	private static int[][] map, deltas = {null, {0, 1}, {0, -1}, {-1, 0}, {1, 0}}; 
+	private static StringBuilder sb = new StringBuilder();
+	
 	static class Dice {
 		
 		int r;
@@ -52,7 +54,7 @@ public class Main {
 				map[nr][nc] = 0;
 				
 			}
-			System.out.println(diceInfo[UP]);
+			sb.append(diceInfo[UP]).append('\n');
 			r = nr;
 			c = nc;
 			
@@ -123,6 +125,8 @@ public class Main {
 			int cmd = Integer.parseInt(st.nextToken());
 			dice.roll(cmd);
 		}
+		
+		System.out.println(sb);
 		
 	}
 	
