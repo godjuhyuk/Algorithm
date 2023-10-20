@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -24,9 +26,9 @@ import java.util.StringTokenizer;
  */
 public class Main {
 
-	private static int N, L, R;
+	private static int N, L, R, ans;
 	private static int[][] map;
-	private static boolean[][] visited;
+	private static int[][] visited;
 	private static int[][] deltas = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 	
 	public static void main(String[] args) throws IOException {
@@ -44,20 +46,17 @@ public class Main {
 			}
 		}
 		boolean gameOver = false;
-		int ans = 0;
+		visited = new int[N][N];
 		while(!gameOver) {
 			gameOver = true;
-			visited = new boolean[N][N];
 			for(int i=0; i<N; i++) {
 				for(int j=0; j<N; j++) {
-					if(!visited[i][j] && openBorderBFS(i, j, 0)) {
-						visited[i][j] = true;
+					if(visited[i][j] == ans && openBorderBFS(i, j, 0)) {
 						gameOver = false;
 					}
 				}
 			}
 			if(!gameOver) ans++;
-			
 		}
 		
 		System.out.println(ans);
@@ -67,14 +66,13 @@ public class Main {
 
 	private static boolean openBorderBFS(int r, int c, int sum) {
 		
-		Stack<int[]> stack = new Stack();
+		List<int[]> list = new ArrayList<int[]>();
 		Queue<int[]> q = new ArrayDeque();
-		boolean[][] tempVisited = new boolean[N][N];
 		
 		q.add(new int[] {r, c});
-		stack.add(new int[] {r, c});
+		list.add(new int[] {r, c});
 		sum += map[r][c];
-		tempVisited[r][c] = true;
+		visited[r][c]= ans+1;
 		
 		while(!q.isEmpty()) {
 			
@@ -84,27 +82,27 @@ public class Main {
 				int nr = temp[0] + d[0];
 				int nc = temp[1] + d[1];
 				
-				if(isOutOfRange(nr, nc) || tempVisited[nr][nc] || visited[nr][nc]) continue;
-				
+				if(isOutOfRange(nr, nc) || visited[nr][nc] == ans+1) continue;
 				
 				if(isOpenBorder(map[nr][nc], map[temp[0]][temp[1]])) {
-					tempVisited[nr][nc] = true;
-					visited[nr][nc] = true;
-					stack.add(new int[] {nr, nc});
+					visited[nr][nc] = ans+1;
+					list.add(new int[] {nr, nc});
 					q.add(new int[] {nr, nc});
 					sum += map[nr][nc];
 				}
 				
 			}
 			
+			
 		}
 		
-		if(stack.size() == 1) return false;
+		if(list.size() == 1) {
+			visited[r][c] = ans;
+			return false;
+		}
+		int newPopulation = sum / list.size();
 		
-		int newPopulation = sum / stack.size();
-		
-		while(!stack.isEmpty()) {
-			int[] temp = stack.pop();
+		for(int[] temp : list) {
 			map[temp[0]][temp[1]] = newPopulation;
 		}
 		
