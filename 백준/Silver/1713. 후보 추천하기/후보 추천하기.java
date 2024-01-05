@@ -1,10 +1,7 @@
-/* package whatever; // don't place package name! */
-
 import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-/* Name of the class has to be "Main" only if the class is public. */
 class Main
 {
 	private static int N, M;
@@ -65,12 +62,13 @@ class Main
 				school[recommendNum].isInFrame = true;
 			}
 		}
-		
+		StringBuilder sb = new StringBuilder();
 		for(Student std : school) {
 			if(std != null && std.isInFrame){
-				System.out.print(std.num + " ");
+				sb.append(std.num).append(' ');
 			}
 		}
+        System.out.println(sb);
 		
 	}
 }
