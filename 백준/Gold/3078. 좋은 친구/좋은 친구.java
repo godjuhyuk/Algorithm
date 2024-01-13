@@ -49,7 +49,7 @@ class Main
 			if(q.isEmpty()) {
 				q.offer(arr[i]);
 			} 
-			else if(q.peek().name == arr[i].name && Math.abs(q.peek().ranking - arr[i].ranking) <= K) {
+			else if(q.peek().name == arr[i].name && arr[i].ranking - q.peek().ranking <= K) {
 				ans += q.size(); 
 				q.offer(arr[i]);
 			} else {
