@@ -103,7 +103,7 @@ public class Main {
             gravity();
 
             // map 90도 반시계 회전
-            turnCounterClockwise();
+            rotate();
 
             // map 중력 작용
             gravity();
@@ -115,50 +115,6 @@ public class Main {
 
         System.out.println(ans);
 
-    }
-
-    private static void turnCounterClockwise() {
-
-        for(int r=0, c=0, size=N; r<N/2; r++, c++, size-=2){
-            for(int i=0; i<size-1; i++){
-                turn(r, c, size);
-            }
-        }
-    }
-
-    private static void turn(int r, int c, int size) {
-
-        if(size == 1) return;
-
-        int memo = map[r][c];
-        int tempRow = r;
-        int tempCol = c;
-
-        // r, c 부터 r, c+size 당기기
-        while(tempCol < c + size - 1){
-            map[tempRow][tempCol] = map[tempRow][tempCol+1];
-            tempCol++;
-        }
-
-        // r, c + size 부터 r + size, c+size 당기기
-        while(tempRow < r + size - 1){
-            map[tempRow][tempCol] = map[tempRow+1][tempCol];
-            tempRow++;
-        }
-
-        // r + size, c + size 부터 r + size, c 당기기
-        while(tempCol > c){
-            map[tempRow][tempCol] = map[tempRow][tempCol-1];
-            tempCol--;
-        }
-
-        // r + size, c 부터 r, c 당기기
-        while(tempRow > r+1){
-            map[tempRow][tempCol] = map[tempRow-1][tempCol];
-            tempRow--;
-        }
-
-        map[tempRow][tempCol] = memo;
     }
 
     private static void gravity() {
@@ -242,5 +198,16 @@ public class Main {
         return r < 0 || c < 0 || r >= N || c >= N;
     }
 
+    public static void rotate() {
+        int[][] temp = new int[N][N];
+
+        for (int i=0; i<N; i++) {
+            for (int j=0; j<N; j++) {
+                temp[N-j-1][i] = map[i][j];
+            }
+        }
+
+        map = temp;
+    }
 
 }
