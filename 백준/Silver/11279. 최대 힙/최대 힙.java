@@ -1,42 +1,29 @@
+/* package whatever; // don't place package name! */
+
 import java.util.*;
+import java.lang.*;
 import java.io.*;
 
-public class Main {
-    
-	private static PriorityQueue<Integer> priQueue;
-	private static StringBuilder sb;
-	
-	private static void operate(int cmd) {
-		
-		if(cmd == 0) {
-			Integer a = priQueue.poll();
-			if(a == null) {
-				sb.append(0).append('\n');
+/* Name of the class has to be "Main" only if the class is public. */
+class Main
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+		int N = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<N; i++) {
+			int input = Integer.parseInt(br.readLine());
+			if(input == 0) {
+				if(pq.size() == 0) sb.append('0').append('\n');
+				else sb.append(pq.poll()).append('\n');
 			} else {
-				sb.append(a).append('\n');
+				pq.offer(input);
 			}
-		} else {
-			priQueue.add(cmd);
 		}
-
+		
+		System.out.println(sb);
+		
 	}
-	
-	public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        sb = new StringBuilder();
-        int n = Integer.parseInt(br.readLine());
-        int[] commandList = new int[n];
-        for(int i=0; i<n; i++) {
-        	commandList[i] = Integer.parseInt(br.readLine());
-        }
-        
-        priQueue = new PriorityQueue<Integer>(Collections.reverseOrder());
-        
-        for(int i=0; i<n; i++) {
-        	int x = commandList[i];
-        	operate(x);	
-        }
-        
-        System.out.println(sb);
- }
 }
