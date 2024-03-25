@@ -19,7 +19,7 @@ class Solution {
     void recursive(int step, int count, int energy, int[][] dungeons){
         
         if(step == dungeons.length) {
-            System.out.println(count);
+            System.out.println(step);
             answer = Math.max(count, answer);
             return;
         }
@@ -30,7 +30,7 @@ class Solution {
                 isSelected[i] = true;
                 if(energy >= dungeons[i][0]){
                     recursive(step+1, count+1, energy-dungeons[i][1], dungeons);
-                } else {
+                }  else {
                     recursive(step+1, count, energy, dungeons);
                 }
                 isSelected[i] = false;
