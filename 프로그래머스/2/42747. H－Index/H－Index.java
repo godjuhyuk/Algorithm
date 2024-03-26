@@ -19,25 +19,15 @@ h=3 => 5편 중 3번 이상 인용된 논문이 3편, 나머지 논문이 3번 �
 import java.util.*;
 class Solution {
     public int solution(int[] citations) {
-        int answer = 0;
         
         Arrays.sort(citations);
-        
+
         int max = 0;
-        for(int i=0; i<citations.length; i++) max = Math.max(max, citations[i]);
-        
-        for(int h=max; h>0; h--) {
-            int cnt1 = 0;
-            for(int j=citations.length-1; j>=0; j--){
-                
-                if(citations[j] >= h) {
-                    cnt1++;
-                }
-            }
-            
-            if(cnt1 >= h && citations.length - cnt1 <= h) return h;
+        for(int i = citations.length-1; i > -1; i--){
+            int min = (int)Math.min(citations[i], citations.length - i);
+            if(max < min) max = min;
         }
-        
-        return answer;
+
+        return max;
     }
 }
