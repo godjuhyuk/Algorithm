@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 /**
  *
  * 시작 시간: 오후 8시 23분
+ *
  * 문제 해석)
  *
  * 올리는 위치: 1번
@@ -83,14 +84,16 @@ public class Main {
         int K = Integer.parseInt(st.nextToken());
 
         Block[] belt = new Block[2*N];
+        boolean[] isBroken = new boolean[2*N];
+
         st = new StringTokenizer(br.readLine());
         for(int i=0; i<2*N; i++) belt[i] = new Block(i, Integer.parseInt(st.nextToken()), false);
 
         int loadLoc = 0;
         int unloadLoc = N-1;
 
-        int phase = 0;
-        while(true){
+        int phase = 0, exitCount = 0;
+        while(exitCount < K){
             phase++;
 
             /**
@@ -121,6 +124,7 @@ public class Main {
                     belt[tempIdx].isRobotHere = false;
                     belt[(tempIdx+1) % (2*N)].isRobotHere = true;
                     belt[(tempIdx+1) % (2*N)].HP--;
+                    if(belt[(tempIdx+1) % (2*N)].HP == 0) exitCount++;
                     if((tempIdx+1) % (2*N) == unloadLoc) belt[(tempIdx+1) % (2*N)].isRobotHere = false;
                 }
             }
@@ -129,26 +133,13 @@ public class Main {
             if(belt[loadLoc].HP > 0) {
                 belt[loadLoc].isRobotHere = true;
                 belt[loadLoc].HP--;
-            }
-            // 5. 각 칸 내구도 체크하며 카운트 ( K개 이상이면 종료)
-            int exitCount = 0;
-            for(int i = unloadLoc - 1; i >= unloadLoc - 2*N; i--) {
-                int tempIdx = i;
-                if(tempIdx < 0) tempIdx += 2*N;
-                if(belt[tempIdx].HP == 0) {
-                    exitCount++;
-                }
-            }
-
-            if(exitCount >= K) {
-                System.out.println(phase);
-                return;
+                if(belt[loadLoc].HP == 0) exitCount++;
             }
 
 
         }
 
-
+        System.out.println(phase);
 
     }
 
