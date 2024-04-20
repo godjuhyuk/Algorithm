@@ -37,17 +37,17 @@ public class Main {
             return;
         }
 
-        solve(0, Arrays.copyOf(input, n));
-        solve(1, Arrays.copyOf(input, n));
+        solve(false, Arrays.copyOf(input, n));
+        solve(true, Arrays.copyOf(input, n));
 
         if(ans != Integer.MAX_VALUE )System.out.println(ans);
         else System.out.println(-1);
     }
 
-    private static void solve(int flag, char[] origin) {
+    private static void solve(boolean clickFirstButton, char[] origin) {
         int cnt = 0;
 
-        if(flag == 1) {
+        if(clickFirstButton) {
             click(0, origin);
             cnt++;
         }
@@ -57,8 +57,8 @@ public class Main {
                 cnt++;
                 click(i+1, origin);
             }
-            if(equalCheck(origin, want)) ans = Math.min(ans, cnt);
         }
+        if(equalCheck(origin, want)) ans = Math.min(ans, cnt);
 
     }
 
