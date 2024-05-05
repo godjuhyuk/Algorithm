@@ -43,6 +43,7 @@ public class Main {
 	
 	private static int N, M;
 	private static int[][] deltas = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+	private static boolean[][][][] visited;
 	private static char[][] map;
 	
 	public static void main(String[] args) throws IOException { 
@@ -54,6 +55,7 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		
 		map = new char[N][M];
+		visited = new boolean[N][M][N][M];
 		
 		Coin[] arr = {null, null};
 		
@@ -96,6 +98,8 @@ public class Main {
 						return turn;
 					}
 					
+					if(visited[nr1][nc1][nr2][nc2]) continue;
+					
 					if(map[nr1][nc1] == '#') {
 						nr1 = temp[0].r;
 						nc1 = temp[0].c;
@@ -105,6 +109,8 @@ public class Main {
 						nr2 = temp[1].r;
 						nc2 = temp[1].c;
 					}
+					
+					visited[nr1][nc1][nr2][nc2] = true;
 					
 					q.offer(new Coin[] {new Coin(nr1, nc1), new Coin(nr2, nc2)});
 					
