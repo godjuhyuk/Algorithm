@@ -76,6 +76,7 @@ public class Main {
 	private static int gameBFS(Coin[] arr) {
 		
 		Queue<Coin[]> q = new ArrayDeque<Coin[]>();
+		visited[arr[0].r][arr[0].c][arr[1].r][arr[1].c] = true;
 		q.offer(arr);
 		
 		int turn = 0;
@@ -100,6 +101,8 @@ public class Main {
 					
 					if(visited[nr1][nc1][nr2][nc2]) continue;
 					
+					visited[nr1][nc1][nr2][nc2] = true;
+					
 					if(map[nr1][nc1] == '#') {
 						nr1 = temp[0].r;
 						nc1 = temp[0].c;
@@ -109,8 +112,6 @@ public class Main {
 						nr2 = temp[1].r;
 						nc2 = temp[1].c;
 					}
-					
-					visited[nr1][nc1][nr2][nc2] = true;
 					
 					q.offer(new Coin[] {new Coin(nr1, nc1), new Coin(nr2, nc2)});
 					
