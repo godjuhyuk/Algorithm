@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -191,7 +190,7 @@ public class Main {
     private static int[][] getNewMap(int[][] map) {
         int[][] newMap = new int[4][4];
         for(int i=0; i<4; i++){
-            for(int j=0; j<4; j++) newMap[i][j] = map[i][j];
+        	newMap[i] = Arrays.copyOf(map[i], 4);
         }
         return newMap;
     }
