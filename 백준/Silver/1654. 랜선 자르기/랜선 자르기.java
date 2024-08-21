@@ -44,16 +44,20 @@ public class Main {
 		
 		
 		long left = 0;
-		long right = max + 1;
+		long right = max+1;
+		long ans = Integer.MIN_VALUE;
 		while(left + 1< right) {
 			long mid = (left + right) / 2;
 			long result = getNumOfLine(mid);
+			
+			if(result >= N) ans = Math.max(ans, mid);
 			
 			if(result < N) right = mid;
 			else left = mid;
 		}
 		
-		System.out.println(left);
+		System.out.println(ans);
+		
 		
 	}
 
