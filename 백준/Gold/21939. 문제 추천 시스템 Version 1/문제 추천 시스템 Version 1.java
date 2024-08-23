@@ -8,12 +8,10 @@ public class Main {
 
 	private static class Problem implements Comparable<Problem> {
 		
-		int ver;
 		int num;
 		int level;
-		public Problem(int num, int level, int ver) {
+		public Problem(int num, int level) {
 			super();
-			this.ver = ver;
 			this.num = num;
 			this.level = level;
 		}
@@ -26,7 +24,7 @@ public class Main {
 	}
 	
 	private static int N, M;
-	private static int[][] problemInfo = new int[100001][2];
+	private static int[] problemInfo = new int[100001];
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -36,8 +34,8 @@ public class Main {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int num = Integer.parseInt(st.nextToken());
 			int level = Integer.parseInt(st.nextToken());
-			problemInfo[num][0] = level;
-			book.add(new Problem(num, level, problemInfo[num][1]));
+			problemInfo[num] = level;
+			book.add(new Problem(num, level));
 		}
 		
 		M = Integer.parseInt(br.readLine());
@@ -50,28 +48,29 @@ public class Main {
 			if(cmd.equals("add")) {
 				int num = Integer.parseInt(st.nextToken());
 				int level = Integer.parseInt(st.nextToken());
-				problemInfo[num][0] = level;
-				book.add(new Problem(num, level, problemInfo[num][1]));
+				problemInfo[num] = level;
+				book.add(new Problem(num, level));
 			}
 			else if (cmd.equals("solved")) {
 				int num = Integer.parseInt(st.nextToken());
-				problemInfo[num][1]++;
+				book.remove(new Problem(num, problemInfo[num]));
 			}
 			else {
 				int cmdNum = Integer.parseInt(st.nextToken());
 				if(cmdNum == -1) {
 					
-					while(book.first().ver != problemInfo[book.first().num][1]) book.pollFirst();
+//					while(book.first().ver != problemInfo[book.first().num][1]) book.pollFirst();
 					sb.append(book.first().num).append('\n');
 				}
 				else {
-					while(book.last().ver != problemInfo[book.last().num][1]) book.pollLast();
+//					while(book.last().ver != problemInfo[book.last().num][1]) book.pollLast();
 					sb.append(book.last().num).append('\n');
 				}
 			}
 		}
 		
 		System.out.println(sb);
+		
 	}
 	
 	
