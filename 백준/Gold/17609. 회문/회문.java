@@ -3,15 +3,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-    static int isPalindrome(String str, int left, int right, int idx, boolean isDel) {
-    	if(idx == str.length() / 2) {
+    // charAt ver
+    static int isPalindrome(String str, int left, int right, boolean isDel) {
+    	
+    	if(left >= right) {
     		return isDel ? 1 : 0;
     	}
     	
-    	if(str.charAt(left + idx) == str.charAt(right - idx)) return isPalindrome(str, left, right, idx + 1, isDel);
+    	if(str.charAt(left) == str.charAt(right)) return isPalindrome(str, left+1, right-1, isDel);
     	else if(isDel) return 2;
     	else {
-    		return Math.min(isPalindrome(str, left+1, right, idx, true), isPalindrome(str, left, right-1, idx, true));
+    		return Math.min(isPalindrome(str, left+1, right, true), isPalindrome(str, left, right-1, true));
     	}
 
     }
@@ -26,7 +28,7 @@ public class Main {
             String input = br.readLine();
 
             // 회문 체크
-            int result = isPalindrome(input, 0, input.length()-1, 0, false);
+            int result = isPalindrome(input, 0, input.length()-1, false);
             sb.append(result).append('\n');
         }
 
