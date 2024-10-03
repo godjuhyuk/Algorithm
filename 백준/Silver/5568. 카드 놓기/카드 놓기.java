@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * 
@@ -17,7 +18,7 @@ public class Main {
 
 	private static int N, K;
 	private static String permList[], arr[];
-	private static HashMap<String, Character> hashMap;
+	private static HashSet<String> hashSet;
 	private static boolean[] isSelected;
 	public static void main(String[] args) throws IOException {
 		
@@ -31,9 +32,9 @@ public class Main {
 		
 		for(int i=0; i<N; i++) arr[i] = br.readLine();
 		
-		hashMap = new HashMap<String, Character>();
+		hashSet = new HashSet<String>();
 		permutation(0);
-		System.out.println(hashMap.keySet().size());
+		System.out.println(hashSet.size());
 	}
 
 	private static void permutation(int depths) {
@@ -42,7 +43,7 @@ public class Main {
 		if(depths == K) {
 			String temp = "";
 			for(String card: permList) temp += card;
-			hashMap.put(temp, ' ');
+			hashSet.add(temp);
 			return;
 		}
 		
