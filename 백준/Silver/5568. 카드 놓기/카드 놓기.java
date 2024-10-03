@@ -1,47 +1,61 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.HashMap;
 
+/**
+ * 
+ * permutation 구현하고 
+ * hashmap으로 관리하기
+ * 
+ * 
+ * @author GODJUHYEOK
+ *
+ */
 public class Main {
-    private static int n, k;
-    private static String[] num;
-    private static HashSet<String> set;
-    private static boolean[] isSelected;
-    public static void main(String[] args) throws IOException {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        k = Integer.parseInt(br.readLine());
-        set = new HashSet<>();
-        num = new String[n];
+	private static int N, K;
+	private static String permList[], arr[];
+	private static HashMap<String, Character> hashMap;
+	private static boolean[] isSelected;
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		K = Integer.parseInt(br.readLine());
+		
+		arr = new String[N];
+		isSelected = new boolean[N];
+		permList = new String[K];
+		
+		for(int i=0; i<N; i++) arr[i] = br.readLine();
+		
+		hashMap = new HashMap<String, Character>();
+		permutation(0);
+		System.out.println(hashMap.keySet().size());
+	}
 
-        for(int i=0; i<n; i++) num[i] = br.readLine();
-
-
-        isSelected = new boolean[n];
-        perm("", 0);
-
-        System.out.println(set.size());
-    }
-
-    private static void perm(String now, int depths) {
-
-        // 기저 조건
-        if(depths == k) {
-            set.add(now);
-            return;
-        }
-
-        // 유도 파트
-        for(int i=0; i<n; i++) {
-            if(!isSelected[i]) {
-                isSelected[i] = true;
-                perm(now + num[i], depths+1);
-                isSelected[i] = false;
-            }
-        }
-
-    }
-
+	private static void permutation(int depths) {
+		
+		// 기저 조건
+		if(depths == K) {
+			String temp = "";
+			for(String card: permList) temp += card;
+			hashMap.put(temp, ' ');
+			return;
+		}
+		
+		for(int i=0; i<N; i++) {
+			if(!isSelected[i]) {
+				isSelected[i] = true;
+				permList[depths] = arr[i];
+				permutation(depths+1);
+				isSelected[i] = false;
+			}
+		}
+		
+		
+	}
+	
 }
