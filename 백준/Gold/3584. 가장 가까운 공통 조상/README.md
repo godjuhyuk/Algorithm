@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 22376 KB, 시간: 192 ms
+메모리: 21976 KB, 시간: 172 ms
 
 ### 분류
 
@@ -12,17 +12,17 @@
 
 ### 제출 일자
 
-2023년 9월 20일 13:03:36
+2024년 10월 7일 10:35:16
 
 ### 문제 설명
 
-<p>루트가 있는 트리(rooted tree)가 주어지고, 그 트리 상의 두 정점이 주어질 때 그들의 가장 가까운 공통 조상(Nearest Common Anscestor)은 다음과 같이 정의됩니다.</p>
+<p>루트가 있는 트리(rooted tree)가 주어지고, 그 트리 상의 두 정점이 주어질 때 그들의 가장 가까운 공통 조상(Nearest Common Ancestor)은 다음과 같이 정의됩니다.</p>
 
 <ul>
 	<li>두 노드의 가장 가까운 공통 조상은, 두 노드를 모두 자손으로 가지면서 깊이가 가장 깊은(즉 두 노드에 가장 가까운) 노드를 말합니다.</li>
 </ul>
 
-<p style="text-align:center"><img alt="nca.png" src="https://upload.acmicpc.net/4f2eae58-31bf-445f-a7a3-625505e7102c/-/preview/" style="height:278px; width:304px"></p>
+<p style="text-align:center"><img alt="nca.png" src="" style="height:278px; width:304px"></p>
 
 <p>예를 들어  15와 11를 모두 자손으로 갖는 노드는 4와 8이 있지만, 그 중 깊이가 가장 깊은(15와 11에 가장 가까운) 노드는 4 이므로 가장 가까운 공통 조상은 4가 됩니다.</p>
 
