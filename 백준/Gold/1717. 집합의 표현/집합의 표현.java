@@ -3,70 +3,57 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/**
+ * union find 복습
+ */
 public class Main {
-	private static StringBuilder sb;
-	private static int[] parents;
-	
-	private static int find(int a) {
-		
-		if(parents[a] == a) return a;
-		return parents[a] = find(parents[a]);
+    private static int[] parents;
+    private static int find(int A) {
+        if(A == parents[A]) return A;
+        return parents[A] = find(parents[A]);
+    }
+    private static boolean union(int A, int B) {
 
-	}
-	
-	private static boolean union(int a, int b) {
-		
-		int aRoot = find(a);
-		int bRoot = find(b);
-		
-		if(aRoot == bRoot) return false;
-		parents[bRoot] = aRoot;
-		return true;
+        int rootA = find(A);
+        int rootB = find(B);
 
-	}
-	
-	private static void func(int cmd, int a, int b) {
-		
-		if( cmd == 0) {
-			union(a, b);
-		} else {
-			if(find(a) == find(b)) {
-				sb.append("yes").append('\n');
-			} else {
-				sb.append("no").append('\n');
-			}
-		}
+        if(rootA == rootB) return true;
 
-	}
-	
-	public static void main(String[] args) throws IOException {
-		sb = new StringBuilder();
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		int n = Integer.parseInt(st.nextToken());
-		int m = Integer.parseInt(st.nextToken());
-		
-		parents = new int[n+1];
-		
-		for(int i=0; i<=n; i++) parents[i] = i;
-		
-		for(int i=0; i<m; i++) {
-			
-			st = new StringTokenizer(br.readLine());
-			
-			int cmd = Integer.parseInt(st.nextToken());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			
-			func(cmd, a, b);
-			
-		}
-		
-		System.out.println(sb);
-		
-		
-		
-	}
-	
+        parents[rootB] = rootA;
+        return false;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        parents = new int[N+1];
+
+        for(int i=0; i<=N; i++) parents[i] = i;
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<M; i++) {
+            st = new StringTokenizer(br.readLine());
+
+            int cmd = Integer.parseInt(st.nextToken());
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+
+            if(cmd == 0) union(A, B);
+            else if(find(A) == find(B)){
+                sb.append("YES").append('\n');
+            }
+            else {
+                sb.append("NO").append('\n');
+            }
+        }
+
+        System.out.println(sb);
+
+    }
+
 }
